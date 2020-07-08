@@ -1,0 +1,40 @@
+= form_tag import_users_path, multipart: true do
+  .modal-content{:style => "padding: 0px 24px;"}
+    %h5 Importar usuarios
+    .card-panel{:style => "padding: 5px 24px;background-color: #444444 !important;"}
+      %p.white-text{:align => "justify", :style => "margin: 5px 0;"}
+        Seleccione el archivo
+        %b{:style => "color:#5ab5ff;"} .CSV
+        con los estudiantes a ingresar al sistema con el siguiente formato:
+      %table.white-text.bordered.centered.responsive-table
+        %thead
+          %tr{:style => "color:#5ab5ff;"}
+            %th{:style => "padding: 5px 5px;"} email
+            %th{:style => "padding: 5px 5px;"} name
+            %th{:style => "padding: 5px 5px;"} surname
+            %th{:style => "padding: 5px 5px;"} password
+            %th{:style => "padding: 5px 5px;"} section
+        %tbody
+          %tr
+            %td{:style => "padding: 5px 5px;"} pedro@mail.cl
+            %td{:style => "padding: 5px 5px;"} Pedro
+            %td{:style => "padding: 5px 5px;"} Araya
+            %td{:style => "padding: 5px 5px;"} pass123
+            %td{:style => "padding: 5px 5px;"} A-1
+          %tr
+            %td{:style => "padding: 5px 5px;"} ...
+            %td{:style => "padding: 5px 5px;"} ...
+            %td{:style => "padding: 5px 5px;"} ...
+            %td{:style => "padding: 5px 5px;"} ...
+            %td{:style => "padding: 5px 5px;"} ...
+    .file-field.input-field
+      .row{:href => "#", :style => "margin-bottom: 0px;"}
+        .col.s12.l2
+          .btn.gris3
+            %i.material-icons{:style => "font-size:2rem"} file_upload
+            = file_field_tag :file, class:'align:center'
+        .col.s12.l10
+          %input.file-path.validate{:placeholder => "Seleccionar .CSV"}/
+  .modal-footer
+    %a.modal-action.modal-close.waves-effect.waves-red.btn.red.left{:href => "#!"} Volver
+    %input.waves-effect.btn.right{"data-disable-with" => "importar", :name => "commit", :style => "visibility: visible;", :type => "submit", :value => "importar"}/

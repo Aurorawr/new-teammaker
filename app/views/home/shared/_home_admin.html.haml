@@ -1,0 +1,68 @@
+%div{:style => "padding-top:5%"}
+  .container
+    .row
+      .col.l12.m12.s12.center-align{:style => "padding-bottom: 14px"}
+        %h2{:style => "display: inline"}
+          %b Panel de opciones
+        %hr{:style => "height: 5px;background-color: #2196F3;border-color: transparent !important;"}/
+      .col.s12.m6.l4{:align => "center"}
+        = link_to '<i class="material-icons" style="font-size: 6rem;padding-top:50px">group</i><h5 class="center">Usuarios</h5>'.html_safe, usuarios_path, class: "btn btn-default waves-effect waves-light features-orange" , style: "height:200px; width:100%"
+      .col.s12.m6.l4{:align => "center"}
+        = link_to '<i class="material-icons" style="font-size: 6rem;padding-top:50px">school</i><h5 class="center">Secciones</h5>'.html_safe, sections_path, class: "btn btn-default waves-effect waves-light features-black" , style: "height:200px; width:100%"
+      .col.s12.m6.l4{:align => "center"}
+        = link_to '<i class="material-icons" style="font-size: 6rem;padding-top:50px">device_hub</i><h5 class="center">Grupos</h5>'.html_safe, grupos_path, class: "btn btn-default waves-effect waves-light features-purple" , style: "height:200px; width:100%"
+%br/
+%br/
+%br/
+/
+  <div class="container">
+  <div class="row">
+  <div class="col s6">
+  
+  <canvas id="myChart" width="400" height="400"></canvas>
+  </div>
+  </div>
+  </div>
+  <div class="col l6">
+  <canvas id="myChart" width="400" height="400"></canvas>
+  </div>
+  <script>
+  var ctx = document.getElementById("myChart");
+  var myChart = new Chart(ctx, {
+  type: 'radar',
+  data: {
+  labels: ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9"],
+  datasets: [
+  {
+  label: "Promedio grupo",
+  backgroundColor: "rgba(179,181,198,0.2)",
+  borderColor: "rgba(179,181,198,1)",
+  pointBackgroundColor: "rgba(179,181,198,1)",
+  pointBorderColor: "#fff",
+  pointHoverBackgroundColor: "#fff",
+  pointHoverBorderColor: "rgba(179,181,198,1)",
+  data: [65, 59, 90, 81, 56, 55, 40, 70, 30]
+  },
+  {
+  label: "Estudiante 1",
+  backgroundColor: "rgba(255,99,132,0.2)",
+  borderColor: "rgba(255,99,132,1)",
+  pointBackgroundColor: "rgba(255,99,132,1)",
+  pointBorderColor: "#fff",
+  pointHoverBackgroundColor: "#fff",
+  pointHoverBorderColor: "rgba(255,99,132,1)",
+  data: [28, 48, 40, 19, 96, 27, 100, 65, 80]
+  }
+  ]
+  },
+  options: {
+  scales: {
+  yAxes: [{
+  ticks: {
+  beginAtZero:true
+  }
+  }]
+  }
+  }
+  });
+  </script>

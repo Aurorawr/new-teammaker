@@ -1,0 +1,102 @@
+%div{:style => "padding-top:5%"}
+  .container
+    .row
+      .col.l12.s12.center-align
+        %h3{:style => "display: inline"}
+          %b Grupos de trabajo
+        /
+          <div class="preloader-wrapper small active" style="margin-left:30px">
+          <div class="spinner-layer spinner-red-only">
+          <div class="circle-clipper left">
+          <div class="circle"></div>
+          </div><div class="gap-patch">
+          <div class="circle"></div>
+          </div><div class="circle-clipper right">
+          <div class="circle"></div>
+          </div>
+          </div>
+          </div>
+          <span style="padding-bottom: 30px;    font-size: 16px;">Conformando equipos... </span>
+        %hr{:style => "height: 5px;background-color: #2196F3;border-color: transparent !important;margin-bottom:20px"}/
+        - if @status && @status == 'NO ES POSIBLE GENERAR LOS EQUIPOS DE:'
+          .card-panel.card-fix.red.lighten-4.red-text.center-align
+            %i.material-icons.medium mood_bad
+            %h5.h5-fix
+              %b Ups!, algo no salio bien ...
+            %p{:style => "margin: 4px;"}
+              = @status
+            %p{:style => "margin: 4px;"}
+              %b
+                = @status_seccion
+                \/
+            %p
+              Esto puede deberse a que la sección no cuenta con la cantidad apropiada de estudiantes para generar los equipos o porque ingreso una cantidad de estudiantes por grupo menor a
+              %b 3
+        - elsif @status && @status == '¡GRUPOS GENERADOS CON ÉXITO!'
+          .card-panel.card-fix.green.lighten-4.green-text.center-align
+            %i.material-icons.medium mood
+            %h5.h5-fix
+              %b Todo bien ...
+            %p.alert{:style => "margin: 4px;"}
+              \- #{@status} -
+      .col.l3.m6.s8.offset-m3.offset-s2{:align => "center"}
+        .card-panel
+          %p
+            %b GENERAR GRUPOS
+          = form_tag({:action => "index"}) do
+            .input-field.fix-placeholder
+              %input#porGrupo.validate{:name => "porGrupo", :placeholder => "n° de estudiantes", :type => "number"}/
+            .input-field.fix-placeholder
+              %select#seccion.validate{:name => "seccion", :placeholder => "Seccion", :type => "number"}
+                - current_user.sections.each do |section|
+                  %option{:value => "#{section.id}"}= section.code
+            = submit_tag "CREAR", class: 'btn blue waves-light'
+      .col.l9.m12.s12
+        .card-panel.blue-grey.darken-2.white-text{:align => "left", :style => "padding-bottom: 6px;"}
+          %h5{:align => "center"}
+            %b INFORMACIÓN
+          %p Al conformar los equipos de trabajo considere lo siguiente:
+          %li N° de estudiantes mínimo por grupo deben ser 3 estudiantes.
+          %li Considere que la cantidad de integrantes por grupo no se diferencie por más de un estudiante.
+          %p
+      - @sections_show.each do |section|
+        .col.s12.center-align
+          .card.blue.white-text
+            .card-content
+              %h4
+                Sección: #{section.code}
+            - if section.groups.exists?
+              .card-tabs
+                %ul.tabs.tabs-fixed-width.tabs-transparent
+                  - section.groups.pluck(:group_number).flatten.uniq.each do |number|
+                    %li.tab
+                      %a{:href => "#group#{number.to_s + section.id.to_s}"}
+                        grupo #{number}
+              .card-content{:style => "background-color:#1e87da"}
+                .row
+                  - section.groups.pluck(:group_number).flatten.uniq.each do |number|
+                    %div{:id => "group#{number.to_s + section.id.to_s}"}
+                      - section.users.where(rol: 3).each do |estudiante|
+                        - if estudiante.group(section) != nil && estudiante.group(section)  == number
+                          / Modal Ver estudiante
+                          .modal{:id => "verEstudiante#{estudiante.id}"}
+                            = render :partial => "users/shared/show_user", locals: {user: estudiante}
+                          .col.l6.m12.s12
+                            .card.horizontal.white.darken-2.lighten-1.black-text.z-depth-5
+                              .orange.darken-5.card-image{:style => "width: 20% !important;color:#ffe0b2"}
+                                %p{:align => "center", :style => "padding-top:10px"} ENEATIPO
+                                - if estudiante.eneatype != nil
+                                  %h1= estudiante.eneatype.number
+                                - else
+                                  %p Número
+                              .card-stacked
+                                .card-content
+                                  %h5.flow-text{:align => "center"}
+                                    %b= estudiante.name + ' ' + estudiante.surname
+                                  %p.flow-text{:align => "center"}
+                                    Departamento: #{estudiante.career.name}
+                                .card-action
+                                  %a.orange-text.modal-trigger{:href => "#verEstudiante#{estudiante.id}"} Ver más...
+            - else
+              .card-content{:style => "background-color:#1e87da"}
+                %h5 No hay grupos formados en esta sección

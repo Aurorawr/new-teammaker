@@ -1,0 +1,28 @@
+.modal-content
+  %h4 Nuevo usuario
+  = form_for(@user) do |f|
+    .field
+      = f.label :email, "Correo"
+      = f.text_field :email, autofocus: true, class: "validate", required: "true", placeholder:"ejemplo@correo.cl"
+    .field
+      = f.label :name, "Nombres"
+      = f.text_field :name, autofocus: true, class: "validate", required: "true", placeholder:"Tammy"
+    .field
+      = f.label :surname, "Apellidos"
+      = f.text_field :surname, autofocus: true, class: "validate", required: "true", placeholder:"Lagos"
+    .field
+      = f.label :password, "Contraseña"
+      = f.password_field :password, autocomplete: "off", class: "validate", required: "true", placeholder:"seis caracteres mínimo."
+    .field
+      = f.label :password_confirmation, "Confirmar contraseña"
+      = f.password_field :password_confirmation, autocomplete: "off", class: "validate",required: "true", placeholder:"Vuelva a ingresar la contraseña."
+    = label :rol, "Rol"
+    .input-field
+      %select.browser-default{:name => "user[rol]"}
+        %option>
+        3&gt;Estudiante
+      = succeed "2>Ayudante" do
+        %option
+    - if current_user.rol == 0
+      %option>
+      1&gt;Profesor

@@ -1,0 +1,42 @@
+.modal-content
+  %h3 Editar secci&#xF3;n
+  = form_for(section) do |s|
+    / Inicio de form
+    - if alert && alert[0] == section.id
+      .card-panel.card-fix.red.lighten-4.red-text.center-align
+        - alert.each do |msg|
+          - if msg != section.id
+            %p.alert
+              \- #{msg}
+    .col.l6.m6.s12
+      .field
+        = s.label :section, "Sección"
+        = s.text_field :section, autofocus: true, class: "validate", required: "true", placeholder:"Ej: A-1"
+    .col.l6.m6.s12
+      .field
+        = s.label :year, "Año"
+        = s.number_field :year, placeholder:"2017", class: 'validate', required: "true"
+    .col.l6.m6.s12
+      = label :semester, "Semestre"
+      .input-field
+        %select.browser-default{:name => "section[semester]"}
+          %option
+          - if s.object.semester == 1
+            selected
+          value=1&gt;Primero
+        %option
+        - if s.object.semester == 2
+          selected
+        value=2&gt;Segundo
+.col.l6.m6.s12
+  = label :kind, Tipo
+  .input-field
+    %select.browser-default{:name => "section[kind]"}
+      %option
+      - if s.object.kind == 't'
+        selected
+      value='t'&gt;C&#xE1;tedra
+    %option
+    - if s.object.kind == 'f'
+      selected
+    value='f'&gt;Laboratorio

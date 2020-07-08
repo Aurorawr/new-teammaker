@@ -1,0 +1,44 @@
+.container{:style => "padding-top:5%"}
+  .row
+    .col.s12
+      %h1.en-linea
+        %b Editar configuración de:
+      %h2.en-linea{:style => "color:#2196F3 !important;"} Usuario
+      %hr/
+      = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
+        = devise_error_messages!
+        /
+          <div class="field">
+          <haml_silent></haml_silent><br />
+          <haml_silent>
+          </haml_silent>        </div>
+        %br/
+        - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+          %div
+            Currently waiting confirmation for: #{resource.unconfirmed_email}
+        .field
+          = f.label :password, "Nueva contraseña"
+          %i (Dejar en blanco si no se desea cambiar)
+          %br/
+          = f.password_field :password, autocomplete: "off"
+          - if @minimum_password_length
+            %br/
+            %em
+              = @minimum_password_length
+              caracteres mínimos
+        .field
+          = f.label :password_confirmation
+          %br/
+          = f.password_field :password_confirmation, autocomplete: "off"
+        .field
+          = f.label :current_password, "Contraseña actual"
+          %i (Necesitamos su contraseña actual para confirmar sus cambios)
+          %br/
+          = f.password_field :current_password, autocomplete: "off"
+        .actions
+          = f.submit "Actualizar", class: "waves-effect waves-light btn-large right"
+          = link_to "Volver", :back , class: "waves-effect btn-flat btn-large"
+      /
+        <h3>Cancel my account</h3>
+        
+        <p>Unhappy? <haml_loud> button_to &quot;Cancel my account&quot;, registration_path(resource_name), data: { confirm: &quot;Are you sure?&quot; }, method: :delete </haml_loud></p>

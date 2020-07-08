@@ -1,0 +1,33 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %meta{:content => "width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no", :name => "viewport"}/
+    %title TeamMaker
+    = csrf_meta_tags
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+    = stylesheet_link_tag "customer"
+    %link{:href => "https://fonts.googleapis.com/icon?family=Material+Icons", :rel => "stylesheet"}/
+    
+  %body{class: "#{current_page?(root_path) ?  "" : "features-blue"}"}
+    - if (!user_signed_in? && current_page?(root_path)) || user_signed_in?
+      %header
+        = render :partial => "layouts/shared/navbar"
+    - if notice
+      :javascript
+        Materialize.toast('#{notice}', 5000, 'green')
+    - elsif alert
+      :javascript
+        Materialize.toast('#{alert}', 5000, 'red')
+    - if user_signed_in? && current_user.rol == 0 && !current_page?(root_path) && !current_page?(usuarios_path) && !current_page?(secciones_path)
+      %main{:style => "background-color:#f1f1f1"}
+    - else
+      %main
+        = yield
+    - if (!user_signed_in? && current_page?(root_path)) || user_signed_in?
+      %footer.page-footer{:style => "background-color: #2196F3"}
+        = render :partial => "layouts/shared/footer"
+    = javascript_include_tag 'init'
+    = javascript_include_tag "materialize"
+    = javascript_include_tag 'chart'

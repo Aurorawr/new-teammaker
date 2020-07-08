@@ -1,0 +1,70 @@
+.container{:style => "padding-top:5%"}
+  .row
+    .col.s12
+      - if @section.errors.any?
+        .card-panel.card-fix.red.lighten-4.red-text.center-align
+          %i.material-icons.medium mood_bad
+          %h5.h5-fix
+            %b Ups!, algo no salio bien ...
+          %p{:style => "margin: 4px;"} - NO SE PUDO CREAR LA NUEVA SECCIÓN -
+      - if notice
+        .card-panel.card-fix.green.lighten-4.green-text.center-align
+          %i.material-icons.medium mood
+          %h5.h5-fix
+            %b Todo bien ...
+          %p.alert{:style => "margin: 4px;"}
+            \- #{notice} -
+      - if alert
+        .card-panel.card-fix.red.lighten-4.red-text.center-align
+          %i.material-icons.medium mood_bad
+          %h5.h5-fix
+            %b Ups!, algo no salio bien ...
+          %p{:style => "margin: 4px;"} - NO SE PUDO ACTUALIZAR LA SECCIÓN -
+      %h2{:style => "display: inline"}
+        %b Secciones
+      %a.right.btn-floating.btn-large.waves-effect.waves-light.btn.green.accent-4.tooltipped.modal-trigger{"data-delay" => "50", "data-position" => "top", "data-tooltip" => "Nueva sección", :href => "#nuevaSeccion", :style => "margin-left:1rem"}
+        %i.material-icons{:style => "font-size:2.4rem"} group_add
+      %hr/
+      %table.striped
+        %thead
+          %tr
+            %th N°
+            %th.center Sección
+            %th.center Semestre
+            %th.center Tipo
+            %th.center Estudiantes
+            %th.center Acciones
+        %tbody
+          - n = 1
+          - @sections.each do |section|
+            / Modal Ver Sección
+            .modal.modal-fixed-footer.col.l4.offset-l2{:id => "verSeccion#{section.id}"}
+              = render :partial => "sections/shared/show_section", locals: {section: section}
+            / Modal Editar Sección
+            .modal.modal-fixed-footer.col.l4.offset-l2{:id => "editarSeccion#{section.id}", :style => "height: 360px;"}
+              = render :partial => "sections/shared/edit_section", locals: {section: section}
+            - section.users.where(rol: 3).each do |s|
+              .modal{:id => "verEstudiante#{s.id}"}
+                = render :partial => "users/shared/show_user", locals: {user: s}
+            %tr
+              %td= n
+              %td.center
+                = section.code
+              %td.center
+                = section.semester.to_s + '/' + section.year.to_s
+              %td.center
+                - if section.kind?
+                  Cátedra
+                - else
+                  Laborario
+              %td.center
+                = section.users.where(rol: 3).count
+              %td.center
+                %a.btn.btn-floating.waves-effect.waves-light.modal-trigger{:href => "#verSeccion#{section.id}", :style => "background-color:#2196f3; border-color:#0d8aee"}
+                  %i.material-icons people_outline
+                %a.btn.btn-floating.waves-effect.waves-light.modal-trigger{:href => "#editarSeccion#{section.id}", :style => "background-color:#ff9800; border-color:#e68900"}
+                  %i.material-icons mode_edit
+                = link_to '<i class="material-icons">delete_forever</i>'.html_safe, section, method: :delete, data: { confirm: "¿Estás seguro que deseas eliminar a esta sección?" },class: "btn-floating waves-effect waves-light red"
+            - n = n + 1
+      #nuevaSeccion.modal.modal-fixed-footer.col.l4.m6.offset-l2.offset-m2{:style => " height: 360px;"}
+        = render :partial => "sections/shared/new_section"

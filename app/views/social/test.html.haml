@@ -1,0 +1,64 @@
+.container{:style => "width: 90%;padding-top:2%"}
+  .row
+    .col.s12
+      %h3{:style => "display: inline"}
+        %b
+          Test
+          - if current_user.tests.where(kind: 2).answered?
+            2/2:
+        %h3.sub-titulo{:style => "display: inline; color:#2196F3 !important;"} Social
+        .card-panel.blue.lighten-2{:style => "padding: 10px 24px;"}
+          %strong.white-text.flow-text
+            %b INSTRUCCIONES:
+          %p.white-text.flow-text{:align => "justify", :style => "margin: 1rem 0;"}
+            %b{:style => "color:#005396;"} Solo seleccione
+            a los estudiantes con quien le interesaría o no realizar la actividad propuesta en la pregunta, los demás estudiantes que le sean indiferentes simplemente
+            %b{:style => "color:#005396;"} no los marque.
+        = form_tag({:action => "create"}) do
+          - if @partnersA != []
+            %p.flow-text
+              %b ¿A quien(es) NO elegirías para trabajar en equipo?
+            %select.dropdown{:multiple => "multiple", :name => "partnersA[]"}
+              %option{:disabled => "disabled", :selected => "selected", :value => ""} Seleccione...
+              - @partnersA.each do |partner|
+                %option{:value => "#{partner.id}"}
+                  = partner.name + ' ' + partner.surname
+          %br/
+          - if @partnersB != []
+            %p.flow-text
+              %b ¿Quien(es) crees que NO te elegirían para trabajar en equipo?
+            %select.dropdown{:multiple => "multiple", :name => "partnersB[]"}
+              %option{:disabled => "disabled", :selected => "selected", :value => ""} Seleccione...
+              - @partnersB.each do |partner|
+                %option{:value => "#{partner.id}"}
+                  = partner.name + ' ' + partner.surname
+          %br/
+          = submit_tag "Enviar", class: 'btn btn-large blue waves-light'
+        - else
+          1/2:
+          %h3.sub-titulo{:style => "display: inline; color:#2196F3 !important;"} Social
+          .card-panel.blue.lighten-2{:style => "padding: 10px 24px;"}
+            %strong.white-text.flow-text
+              %b INSTRUCCIONES:
+            %p.white-text.flow-text{:align => "justify", :style => "margin: 1rem 0;"}
+              %b{:style => "color:#005396;"} Solo seleccione
+              a los estudiantes con quien le interesaría o no realizar la actividad propuesta en la pregunta, los demás estudiantes que le sean indiferentes simplemente
+              %b{:style => "color:#005396;"} no los marque.
+          = form_tag({:action => "create"}) do
+            %p.flow-text
+              %b ¿A quien(es) elegirías para trabajar en equipo?
+            %select.dropdown{:multiple => "multiple", :name => "partnersA[]"}
+              %option{:disabled => "disabled", :selected => "selected", :value => ""} Seleccione...
+              - @partners.each do |partner|
+                %option{:value => "#{partner.id}"}
+                  = partner.name + ' ' + partner.surname
+            %br/
+            %p.flow-text
+              %b ¿Quien(es) crees que te elegirían para trabajar en equipo?
+            %select.dropdown{:multiple => "multiple", :name => "partnersB[]"}
+              %option{:disabled => "disabled", :selected => "selected", :value => ""} Seleccione...
+              - @partners.each do |partner|
+                %option{:value => "#{partner.id}"}
+                  = partner.name + ' ' + partner.surname
+            %br/
+            = submit_tag "Enviar", class: 'btn btn-large blue waves-light'

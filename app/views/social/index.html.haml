@@ -1,0 +1,23 @@
+.container.center.title_sub{:style => "padding-top:5%"}
+  .row
+    .col.s12
+      - if current_user.tests.where(kind: 2).answered?
+        - if current_user.tests.where(kind: 3).answered?
+          %h2{:style => "display: inline"}
+            %b ¡Tests de afinidad social completados!
+        - else
+          %h2{:style => "display: inline"}
+            %b Test de afinidad social 2/2
+      - else
+        %h2{:style => "display: inline"}
+          %b Test de afinidad social 1/2
+      %hr{:style => "height: 5px;background-color: #2196F3;border-color: transparent !important;"}/
+      %p.flow-text{:align => "center"} Los test de afinidad social permitirán conocer sus preferencias, indiferencias y rechazos en relación al resto de sus compañeros de sección. Esta información será relevante para la generación de su equipo de trabajo, donde por medio de estos dos tests, se consideraran sus afinidades para la conformación de grupos.
+      - if current_user.tests.where(kind: 2).answered?
+        - if current_user.tests.where(kind: 3).answered?
+          .card-panel.blue.lighten-2
+            %strong.white-text.bold TESTS RESPONDIDOS: Pronto sabrá cual es su equipo de trabajo
+        - else
+          = link_to "Ir a la segunda parte del test social", test_social_test_path , :class => "btn btn-large blue waves-effect waves-light"
+      - else
+        = link_to "Ir a la primera parte del test social", test_social_test_path , :class => "btn btn-large blue waves-effect waves-light"
