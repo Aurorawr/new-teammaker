@@ -7,48 +7,50 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 # Carreras
-Career.create!(name: "Administración Pública") #0
-Career.create!(name: "Ingeniería Ambiental") #1
-Career.create!(name: "Ingeniería Civil en Electricidad") #2
-Career.create!(name: "Ingeniería Civil en Geografía") #3
-Career.create!(name: "Ingeniería Civil en Industria") #4
-Career.create!(name: "Ingeniería Civil en Informática") #5
-Career.create!(name: "Ingeniería Civil en Mecánica") #6
-Career.create!(name: "Ingeniería Civil en Metalurgia") #7
-Career.create!(name: "Ingeniería Civil en Minas") #8
-Career.create!(name: "Ingeniería Civil en Obras Civiles") #9
-Career.create!(name: "Ingeniería Civil en Química") #10
-Career.create!(name: "Ingeniería de Ejecución en Computación e Informática") #11
-Career.create!(name: "Ingeniería de Ejecución en Minas") #12
-Career.create!(name: "Ingeniería de Ejecución en Electricidad") #13
-Career.create!(name: "Ingeniería de Ejecución en Geomensura") #14
-Career.create!(name: "Ingeniería de Ejecución en Industria") #15
-Career.create!(name: "Ingeniería de Ejecución en Mecánica") #16
-Career.create!(name: "Ingeniería de Ejecución en Metalurgia") #17
-Career.create!(name: "Ingeniería de Ejecución en Química") #18
+inst = Institution.create(name: "Universidad de Santiago de Chile")
+
+Program.create!(name: "Administración Pública", institution: inst)#0
+Program.create!(name: "Ingeniería Ambiental", institution: inst) #1
+Program.create!(name: "Ingeniería Civil en Electricidad", institution: inst) #2
+Program.create!(name: "Ingeniería Civil en Geografía", institution: inst) #3<
+Program.create!(name: "Ingeniería Civil en Industria", institution: inst) #4
+Program.create!(name: "Ingeniería Civil en Informática", institution: inst) #5
+Program.create!(name: "Ingeniería Civil en Mecánica", institution: inst) #6
+Program.create!(name: "Ingeniería Civil en Metalurgia", institution: inst) #7
+Program.create!(name: "Ingeniería Civil en Minas", institution: inst) #8
+Program.create!(name: "Ingeniería Civil en Obras Civiles", institution: inst) #9
+Program.create!(name: "Ingeniería Civil en Química", institution: inst) #10
+program = Program.create!(name: "Ingeniería de Ejecución en Computación e Informática", institution: inst) #11
+Program.create!(name: "Ingeniería de Ejecución en Minas", institution: inst) #12
+Program.create!(name: "Ingeniería de Ejecución en Electricidad", institution: inst) #13
+Program.create!(name: "Ingeniería de Ejecución en Geomensura", institution: inst) #14
+Program.create!(name: "Ingeniería de Ejecución en Industria", institution: inst) #15
+Program.create!(name: "Ingeniería de Ejecución en Mecánica", institution: inst) #16
+Program.create!(name: "Ingeniería de Ejecución en Metalurgia", institution: inst) #17
+Program.create!(name: "Ingeniería de Ejecución en Química", institution: inst) #18
 
 # Coordinadores
-User.create!(email: 'coordinador@mail.com',name: 'Juan' ,surname: 'Gómez' , rol: 0 ,status: true ,password: '111111',password_confirmation: '111111', career_id: 1)
+program.users.create!(email: 'coordinador@mail.com',name: 'Juan' ,surname: 'Gómez' , rol: 0 ,status: true ,password: '111111',password_confirmation: '111111')
 
 # Profesores
-User.create!(email: 'profesor@mail.com',name: 'Juan' ,surname: 'Araya' , rol: 1 ,status: true ,password: '111111',password_confirmation: '111111', career_id: 1)
+program.users.create!(email: 'profesor@mail.com',name: 'Juan' ,surname: 'Araya' , rol: 1 ,status: true ,password: '111111',password_confirmation: '111111')
 
 # Ayudantes
-User.create!(email: 'ayudante@mail.com',name: 'Emma' ,surname: 'Watson' , rol: 2 ,status: true ,password: '111111',password_confirmation: '111111', career_id: 1)
+program.users.create!(email: 'ayudante@mail.com',name: 'Emma' ,surname: 'Watson' , rol: 2 ,status: true ,password: '111111',password_confirmation: '111111')
 
 # Estudiantes
-User.create!(email: 'estudiante@mail.com',name: 'Franco' ,surname: 'Gotelli' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111', career_id: 1)
-User.create!(email: 'jorge.plaza@usach.cl',name: 'Jorge' ,surname: 'Plaza' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111', career_id: 2)
-User.create!(email: 'juanmartinez965@gmail.com',name: 'Juan' ,surname: 'Martinez' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111', career_id: 2)
-User.create!(email: 'daniel.gomez@usach.cl',name: 'Daniel' ,surname: 'Gomez' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111', career_id: 3)
-User.create!(email: 'diego.salazar.se@usach.cl',name: 'Diego' ,surname: 'Salazar' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111', career_id: 3)
-User.create!(email: 'franco.labra@usach.cl',name: 'Franco' ,surname: 'Labra' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111', career_id: 2)
-User.create!(email: 'jose.mellado@usach.cl',name: 'José' ,surname: 'Mellado' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111', career_id: 3)
-User.create!(email: 'marco.opazo@usach.cl',name: 'Marco' ,surname: 'Opazo' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111', career_id: 4)
-User.create!(email: 'mauricio.soto.p@usach.cl',name: 'Mauricio' ,surname: 'Soto' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111', career_id: 1)
-User.create!(email: 'rafael.segura@usach.cl',name: 'Rafael' ,surname: 'Segura' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111', career_id: 1)
-User.create!(email: 'vicente.ortiz@usach.cl',name: 'Vicente' ,surname: 'Ortiz' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111', career_id: 4)
-User.create!(email: 'vicente.rivera.r@usach.cl',name: 'Vicente' ,surname: 'Rivera' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111', career_id: 4)
+program.users.create!(email: 'estudiante@mail.com',name: 'Franco' ,surname: 'Gotelli' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
+program.users.create!(email: 'jorge.plaza@usach.cl',name: 'Jorge' ,surname: 'Plaza' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
+program.users.create!(email: 'juanmartinez965@gmail.com',name: 'Juan' ,surname: 'Martinez' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
+program.users.create!(email: 'daniel.gomez@usach.cl',name: 'Daniel' ,surname: 'Gomez' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
+program.users.create!(email: 'diego.salazar.se@usach.cl',name: 'Diego' ,surname: 'Salazar' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
+program.users.create!(email: 'franco.labra@usach.cl',name: 'Franco' ,surname: 'Labra' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
+program.users.create!(email: 'jose.mellado@usach.cl',name: 'José' ,surname: 'Mellado' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
+program.users.create!(email: 'marco.opazo@usach.cl',name: 'Marco' ,surname: 'Opazo' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
+program.users.create!(email: 'mauricio.soto.p@usach.cl',name: 'Mauricio' ,surname: 'Soto' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
+program.users.create!(email: 'rafael.segura@usach.cl',name: 'Rafael' ,surname: 'Segura' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
+program.users.create!(email: 'vicente.ortiz@usach.cl',name: 'Vicente' ,surname: 'Ortiz' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
+program.users.create!(email: 'vicente.rivera.r@usach.cl',name: 'Vicente' ,surname: 'Rivera' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
 
 # Secciones
 subject = Subject.create!(name: "Demeter", code: "DMT")

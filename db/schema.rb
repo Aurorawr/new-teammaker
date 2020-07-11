@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_14_212427) do
+ActiveRecord::Schema.define(version: 2020_07_11_230627) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,12 +23,6 @@ ActiveRecord::Schema.define(version: 2020_06_14_212427) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["test_id"], name: "index_answers_on_test_id"
-  end
-
-  create_table "careers", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "eneatypes", force: :cascade do |t|
@@ -44,6 +38,21 @@ ActiveRecord::Schema.define(version: 2020_06_14_212427) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "programs", force: :cascade do |t|
+    t.string "name"
+    t.bigint "institution_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["institution_id"], name: "index_programs_on_institution_id"
+  end
+
+  create_table "programs_users", force: :cascade do |t|
+    t.bigint "program_id", null: false
+    t.bigint "user_id", null: false
+    t.index ["program_id"], name: "index_programs_users_on_program_id"
+    t.index ["user_id"], name: "index_programs_users_on_user_id"
   end
 
   create_table "section_types", force: :cascade do |t|
@@ -112,18 +121,18 @@ ActiveRecord::Schema.define(version: 2020_06_14_212427) do
     t.boolean "study_group"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "career_id", null: false
-    t.index ["career_id"], name: "index_users_on_career_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "answers", "tests"
   add_foreign_key "eneatypes", "users"
+  add_foreign_key "programs", "institutions"
+  add_foreign_key "programs_users", "programs"
+  add_foreign_key "programs_users", "users"
   add_foreign_key "sections", "section_types"
   add_foreign_key "sections", "subjects"
   add_foreign_key "tests", "users"
   add_foreign_key "user_sections", "sections"
   add_foreign_key "user_sections", "users"
-  add_foreign_key "users", "careers"
 end
