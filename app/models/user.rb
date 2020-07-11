@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_many :institutions, :through => :user_institutions
   has_many :tests
   has_one :eneatype
-  belongs_to :career
+  has_and_belongs_to_many :programs
 
   def self.group(section)
     self.user_sections.find_by(section: section).group_number
