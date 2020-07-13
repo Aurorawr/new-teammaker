@@ -62,7 +62,7 @@
           <% if current_user.rol == 0 %>
             <li class="<%= 'active' if current_page?(grupos_path) %>"><%= link_to "Grupos", grupos_path%></li>
             <li class="<%= 'active' if current_page?(usuarios_path) %>"><%= link_to "Usuarios", usuarios_path%></li>
-            <li class="<%= 'active' if current_page?(secciones_path) %>"><%= link_to "Secciones", secciones_path%></li>
+            <li class="<%= 'active' if current_page?(sections_path) %>"><%= link_to "Secciones", sections_path%></li>
           <% elsif current_user.rol == 1 || current_user.rol == 2 %>
             <li><a class="dropdown-button" href="#!" data-activates="dropdown_section">Mis secciones<i class="material-icons right">arrow_drop_down</i></a></li>
           <% end %>
@@ -127,7 +127,7 @@
           <% if current_user.rol == 0 %>
             <li class="<%= 'active' if current_page?(grupos_path) %>"><%= link_to "Grupos", grupos_path%></li>
             <li class="<%= 'active' if current_page?(usuarios_path) %>"><%= link_to "Usuarios", usuarios_path%></li>
-            <li class="<%= 'active' if current_page?(secciones_path) %>"><%= link_to "Secciones", secciones_path%></li>
+            <li class="<%= 'active' if current_page?(sections_path) %>"><%= link_to "Secciones", sections_path%></li>
           <% elsif current_user.rol == 1 || current_user.rol == 2 %>
             <li><a class="dropdown-button" href="#!" data-activates="dropdown_section_mobile">Mis secciones<i class="material-icons right">arrow_drop_down</i></a></li>
           <% end %>

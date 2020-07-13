@@ -41,7 +41,7 @@
                         </div>
                         <div class="field col l4 s12">
                             <%= label :search_section, "Sección" %>
-                            <%= select_tag :search_section, options_for_select(@sections.map { |obj| obj['section'] }, params[:search_section]), class: "form-control", :prompt => 'Ninguna' %>
+                            <%= select_tag :search_section, options_for_select(@sections.map { |obj| obj['code'] }, params[:search_section]), class: "form-control", :prompt => 'Ninguna' %>
                         </div>
                         <div class="field col l4 s12">
                             <%= label :search_status, "Estado" %>
@@ -93,9 +93,9 @@
                     <tr <%if user.status == false%> style="color:#F44336;" <% end %>>
                         <td><%= user.email %></td>
                         <td>
-                            <p class="truncate" style="max-width: 12ch;" title="<% user.sections.each do |h| %><%= h.section %><% if h != user.sections.last %>, <% end %><% end %>">
+                            <p class="truncate" style="max-width: 12ch;" title="<% user.sections.each do |h| %><%= h.code %><% if h != user.sections.last %>, <% end %><% end %>">
                                 <% user.sections.each do |h| %>
-                                <%= h.section %>
+                                <%= h.code %>
                                 <% if h != user.sections.last %>
                                 ,
                                 <% end %>
@@ -140,7 +140,7 @@
 
             <!-- Modal nuevo usuario -->
             <div id="nuevoUsuario" class="modal modal-fixed-footer">
-                <%= render :partial => "users/shared/new_user", locals: {sections: @sections, careers: @careers} %>
+                <%= render :partial => "users/shared/new_user", locals: {sections: @sections, programs: @programs} %>
             </div>
             <div id="importar" class="modal modal-max modal-fixed-footer" style="">
                 <%= render :partial => "users/shared/importar"%>

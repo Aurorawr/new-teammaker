@@ -4,7 +4,7 @@ class UsersController < ApplicationController
 		if user_signed_in? && current_user.rol == 0
 			@user = User.new
 			@sections = Section.all
-			@careers = Career.all
+			@programs = Program.all
 			
 		  per_page = 5
 		  if params[:per_page]

@@ -10,8 +10,8 @@ class User < ApplicationRecord
   has_one :eneatype
   has_and_belongs_to_many :programs
 
-  def self.group(section)
-    self.user_sections.find_by(section: section).group_number
+  def group
+    self.user_sections.first.group_number
   end
 
   def self.import(file)

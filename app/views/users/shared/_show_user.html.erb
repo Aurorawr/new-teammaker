@@ -30,14 +30,18 @@
                 <b>Sección:</b>
                 <% user.sections.each do |h| %>
                 <span class="chip">
-                    <%= h.section %>
+                    <%= h.code %>
                 </span>
                 <% end %>
             </p>
             <% if user.rol == 3%>
             <p>
-                <b>Carrera:</b>
-                <%= Career.find(user.career_id).name %>
+                <b>Programas:</b>
+                <% user.programs.each do |p| %>
+                    <span class='chip'>
+                        <%= p.name %>
+                    </span>
+                <% end %>
             </p>
             <%end%>
             <p>
@@ -106,7 +110,7 @@
             <p>
                 <b>N° de grupo:</b>
                 <% if user.group != nil %>
-                <%= user.group.number %>
+                <%= user.group %>
                 <% else %>
                 Ninguno
                 <% end %>
