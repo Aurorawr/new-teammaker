@@ -10,8 +10,8 @@
     <%= form_for(@section) do |s| %>
     <div class="col l6 m6 s12">
         <div class="field">
-            <%= s.label :section, "Sección" %>
-            <%= s.text_field :section, autofocus: true, class: "validate", required: "true", placeholder:"Ej: A-1"  %>
+            <%= s.label :code, "Sección" %>
+            <%= s.text_field :code, autofocus: true, class: "validate", required: "true", placeholder:"Ej: A-1"  %>
         </div>
     </div>
     <div class="col l6 m6 s12">
@@ -30,9 +30,9 @@
         </div>
     </div>
     <div class="col l6 m6 s12">
-        <%= label :kind, "Tipo" %>
+        <%= label :section_type, "Tipo" %>
         <div class="input-field">
-            <select name="section[kind]" class="browser-default">
+            <select name="section[section_type]" class="browser-default">
                 <option value='t'>Cátedra</option>
                 <option value='f'>Laboratorio</option>
             </select>

@@ -57,17 +57,13 @@
                     <tr>
                         <td><%= n %></td>
                         <td class="center">
-                            <%= section.section %>
+                            <%= section.code %>
                         </td>
                         <td class="center">
                             <%= section.semester.to_s + '/' + section.year.to_s %>
                         </td>
                         <td class="center">
-                            <% if section.kind? %>
-                            Cátedra
-                            <% else %>
-                            Laborario
-                            <% end %>
+                            <% section.section_type.name %>
                         </td>
                         <td class="center">
                             <%= section.users.where(rol: 3).count %>

@@ -40,7 +40,7 @@
         </script>
         </div>
         <% end %>
-        <% if user_signed_in? && current_user.rol == 0 && !current_page?(root_path) && !current_page?(usuarios_path) && !current_page?(secciones_path)  %>
+        <% if user_signed_in? && current_user.rol == 0 && !current_page?(root_path) && !current_page?(usuarios_path) && !current_page?(sections_path)  %>
         <main style="background-color:#f1f1f1">
             <% else %>
             <main>
