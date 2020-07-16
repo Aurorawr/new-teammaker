@@ -68,7 +68,5 @@ gem 'materialize-sass'
 gem 'will_paginate'
 gem 'will_paginate-materialize'
 
-gem 'haml-rails'
-
 gem "actionpack", ">= 6.0.3.2"
 gem "rack", ">= 2.2.3"
