@@ -3,7 +3,7 @@
         <div class="row center-align">
             <% if current_user.group != nil %>
             <h2 style="display: inline"><b>
-                    Grupo n° <%= current_user.group.number %> / sección <%= current_user.sections.first.section %>
+                    Grupo n° <%= current_user.group %> / sección <%= current_user.sections.first.code %>
                 </b></h2>
             <hr style="background-color:#2196F3;height: 5px;border-color: transparent !important;">
             <div style="padding-top: 50px">

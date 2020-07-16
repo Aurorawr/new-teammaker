@@ -45,7 +45,7 @@
                     <div class="input-field fix-placeholder">
                         <select placeholder="Seccion" id="seccion" name="seccion" type="number" class="validate">
                             <% current_user.sections.each do |section| %>
-                            <option value="<%= section.id %>"><%= section.section %></option>
+                            <option value="<%= section.id %>"><%= section.code %></option>
                             <% end %>
                         </select>
                     </div>
@@ -70,23 +70,23 @@
             <div class="col s12 center-align">
                 <div class="card blue white-text">
                     <div class="card-content">
-                        <h4> Sección: <%= section.section %></h4>
+                        <h4> Sección: <%= section.code %></h4>
                     </div>
                     <% if section.groups.exists? %>
                     <div class="card-tabs">
                         <ul class="tabs tabs-fixed-width tabs-transparent">
-                            <% section.groups.pluck(:number).flatten.uniq.each do |number| %>
-                            <li class="tab"><a href="#group<%= number.to_s + section.id.to_s %>">grupo <%= number %></a></li>
+                            <% section.groups.each do |user_section| %>
+                            <li class="tab"><a href="#group<%= user_section.group_number.to_s + section.id.to_s %>">grupo <%= user_section.group_number %></a></li>
                             <% end %>
                         </ul>
                     </div>
                     <div class="card-content" style="background-color:#1e87da">
                         <div class=" row">
-                            <% section.groups.pluck(:number).flatten.uniq.each do |number| %>
-                            <div id="group<%= number.to_s + section.id.to_s %>">
+                            <% section.groups.each do |number| %>
+                            <div id="group<%= user_section.group_number.to_s + section.id.to_s %>">
                                 <% section.users.where(rol: 3).each do |estudiante| %>
 
-                                <% if estudiante.group != nil && estudiante.group.number == number %>
+                                <% if estudiante.group != nil && estudiante.group.number == user_section.group_number %>
                                 <!-- Modal Ver estudiante-->
                                 <div id="verEstudiante<%= estudiante.id%>" class="modal">
                                     <%= render :partial => "users/shared/show_user", locals: {user: estudiante} %>
@@ -105,7 +105,7 @@
                                         <div class="card-stacked">
                                             <div class="card-content">
                                                 <h5 class="flow-text" align="center"><b><%= estudiante.name + ' ' + estudiante.surname %></b></h5>
-                                                <p class="flow-text" align="center">Departamento: <%= Career.find(estudiante.career_id).name %></p>
+                                                <p class="flow-text" align="center">Programa: <%= estudiante.programs.first.name %></p>
                                             </div>
                                             <div class="card-action">
                                                 <a class="orange-text modal-trigger" href="#verEstudiante<%= estudiante.id%>">Ver más...</a>
