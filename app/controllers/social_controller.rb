@@ -86,7 +86,7 @@ class SocialController < ApplicationController
           redirect_to test_social_path, notice: "Test realizado con éxito"   
         end
       else
-        redirect_to :back, alert: "No se a podido procesar la solicitud"        
+        redirect_back(fallback_location: test_social_path, alert: "No se ha podido procesar la solicitud") 
       end
     end
   end
