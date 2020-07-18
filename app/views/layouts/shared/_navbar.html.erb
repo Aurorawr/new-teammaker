@@ -12,7 +12,7 @@
           </ul>
           <ul id="dropdown_section" class="dropdown-content" style="margin-top: 64px;">
             <% current_user.sections.each do |section| %>
-              <li><%= link_to section.section,section_path(section) %></li>
+              <li><%= link_to section.code,section_path(section) %></li>
             <% end %>
           </ul>
           <ul id="dropdown_test" class="dropdown-content" style="margin-top: 64px;">
@@ -84,7 +84,7 @@
           </ul>
           <ul id="dropdown_section_mobile" class="dropdown-content" style="margin-top: 64px;">
             <% current_user.sections.each do |section| %>
-              <li><%= link_to section.section,section_path(section) %></li>
+              <li><%= link_to section.code,section_path(section) %></li>
             <% end %>
           </ul>
           <ul id="dropdown_test_mobile" class="dropdown-content" style="margin-top: 48px;">
