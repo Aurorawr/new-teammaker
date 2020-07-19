@@ -44,7 +44,7 @@
                 <h1 class="center"><strong class="bold">PROPÓSITO</strong></h1>
                 <br>
                 <blockquote style="border-left: 5px solid #607D8B;">
-                    <p class="flow-text" align="justify">Apoyar el proceso de selección de <strong class="bold">equipos de trabajo</strong> para la sección <%= current_user.sections.first.section %>, considerando factores interpersonales y personales apoyados por un sistema de clasificación de personalidad y afinidad social.</p>
+                    <p class="flow-text" align="justify">Apoyar el proceso de selección de <strong class="bold">equipos de trabajo</strong> para la sección <%= current_user.sections.first.code %>, considerando factores interpersonales y personales apoyados por un sistema de clasificación de personalidad y afinidad social.</p>
                 </blockquote>
             </div>
         </div>
@@ -110,7 +110,7 @@
         <h4><strong>Organizado por el profesor</strong> </h4>
         <br>
         <h5>CONSENTIMIENTO INFORMADO</h5>
-        <p align="justify">A través del siguiente consentimiento informado yo <b style="font-size: 18px;"><%= current_user.name %> <%= current_user.surname %></b>, estudiante de la sección <%= current_user.sections.first.section %>. Accedo a ser organizado por el profesor para ser asignado a un equipo de trabajo y acepto que en el proceso la información obtenida sobre mi, sea utilizada con los fines de generar mi perfil de afinidad social y de personalidad.</p>
+        <p align="justify">A través del siguiente consentimiento informado yo <b style="font-size: 18px;"><%= current_user.name %> <%= current_user.surname %></b>, estudiante de la sección <%= current_user.sections.first.code %>. Accedo a ser organizado por el profesor para ser asignado a un equipo de trabajo y acepto que en el proceso la información obtenida sobre mi, sea utilizada con los fines de generar mi perfil de afinidad social y de personalidad.</p>
 
         <p align="justify">Además, se le informa que todos sus datos personales solo seran accedidos por su profesor, ayudante y coordinador de la asignatura con fines gestionar su identidad en la plataforma TeamMaker para identificarlo como usuario estudiante.</p>
 
@@ -135,7 +135,7 @@
         <br>
         <h5>CONSENTIMIENTO INFORMADO</h5>
         <p align="justify">
-            A través del siguiente consentimiento informado yo <b style="font-size: 18px;"><%= current_user.name %> <%= current_user.surname %></b> estudiante de la sección <%= current_user.sections.first.section %> . Acepto organizarme para generar mi equipo de trabajo y rechazo la opción de permitir que este sea generado por el profesor a cargo de mi sección.
+            A través del siguiente consentimiento informado yo <b style="font-size: 18px;"><%= current_user.name %> <%= current_user.surname %></b> estudiante de la sección <%= current_user.sections.first.code %> . Acepto organizarme para generar mi equipo de trabajo y rechazo la opción de permitir que este sea generado por el profesor a cargo de mi sección.
         </p>
     </div>
     <div class="modal-footer">
