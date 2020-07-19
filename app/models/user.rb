@@ -25,7 +25,7 @@ class User < ApplicationRecord
       valid_surname = false
       valid_email = false
       valid_password = false
-      valid_career = false
+      valid_program = false
       valid_section = false
 
       if row["name"] != nil && row["name"] != "" && row["name"] != " "
@@ -44,22 +44,22 @@ class User < ApplicationRecord
         valid_password = true
       end
 
-      if row["career"] != nil && row["career"] != "" && row["career"] != " "
-        valid_career = true
+      if row["program"] != nil && row["program"] != "" && row["program"] != " "
+        valid_program = true
       end
 
       if row["section"] != nil && row["section"] != "" && row["section"] != " "
         valid_section = true
       end
 
-      if valid_name == true && valid_surname == true && valid_email == true && valid_password == true && valid_career && valid_section == true
+      if valid_name == true && valid_surname == true && valid_email == true && valid_password == true && valid_program && valid_section == true
         $mensaje_numero = $m
         $mensaje_nombre = row["name"]
         $mensaje_apellido = row["surname"]
         $mensaje_correo = row["email"]
         $mensaje_clave = row["password"]
         $mensaje_section = row["section"]
-        $mensaje_career = row["career"]
+        $mensaje_program = row["program"]
       else
         $mark_import = true
         #$mensaje = row
@@ -71,7 +71,7 @@ class User < ApplicationRecord
         $mensaje_correo = row["email"]
         $mensaje_clave = row["password"]
         $mensaje_section = row["section"]
-        $mensaje_career = row["career"]
+        $mensaje_program = row["program"]
         #raise "Problemas con fila"
       end
     end
@@ -80,7 +80,8 @@ class User < ApplicationRecord
       CSV.foreach(file.path, headers: true) do |row|
         if count_errors == 0
           section = Section.find_by(section: row["section"])
-          User.create!(name: row["name"], surname: row["surname"], email: row["email"], password: row["password"], career_id: row["career"])
+          program = Program.find_by(name: row["program"])
+          User.create!(name: row["name"], surname: row["surname"], email: row["email"], password: row["password"], program: program)
           UserSection.create!(section_id: section.id, user_id: User.last.id)
         end
       end
@@ -91,7 +92,7 @@ class User < ApplicationRecord
   end
 
   def self.check(file)
-    @header_csv = ["email","name","surname","password","section","career"]
+    @header_csv = ["email","name","surname","password","section","program"]
     csv = CSV.open(file.path, :col_sep => ",", :headers => true)
     @header_file = csv.read.headers
     @users = User.all

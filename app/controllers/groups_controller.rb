@@ -203,21 +203,21 @@ class GroupsController < ApplicationController
           end
         end
 
-        @career_matrix = Matrix.build(@personas.size) { 0 } 
+        @program_matrix = Matrix.build(@personas.size) { 0 } 
 
         @personas.each_with_index do |p1, index1|
           @personas.each_with_index do |p2, index2|
-            if p1.career_id != p2.career_id 
-              @career_matrix.send(:[]=, index1, index2, 1)
+            if p1.programs.first != p2.programs.first 
+              @program_matrix.send(:[]=, index1, index2, 1)
             end
           end
         end
-        puts "test: #{@career_matrix}"
+        puts "test: #{@program_matrix}"
         puts "Dims 1: #{@Me}"
         puts "Dims 2: #{@Ms}"
         # Matriz social codificada 
         @Mes = Matrix[]
-        @Mes = @Me + @Ms + @career_matrix
+        @Mes = @Me + @Ms + @program_matrix
         puts "Dims 3: #{@Ms}"
         @totalEstudiantes = @Mes.row_size
         # Correccion de decimales
