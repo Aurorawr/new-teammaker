@@ -70,3 +70,5 @@ gem 'will_paginate-materialize'
 
 gem "actionpack", ">= 6.0.3.2"
 gem "rack", ">= 2.2.3"
+
+gem "faker"

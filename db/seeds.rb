@@ -6,6 +6,8 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+require 'faker'
+
 # Carreras
 inst = Institution.create(name: "Universidad de Santiago de Chile")
 
@@ -29,49 +31,44 @@ Program.create!(name: "Ingeniería de Ejecución en Mecánica", institution: ins
 Program.create!(name: "Ingeniería de Ejecución en Metalurgia", institution: inst) #17
 Program.create!(name: "Ingeniería de Ejecución en Química", institution: inst) #18
 
-# Coordinadores
-program.users.create!(email: 'coordinador@mail.com',name: 'Juan' ,surname: 'Gómez' , rol: 0 ,status: true ,password: '111111',password_confirmation: '111111')
-
-# Profesores
-program.users.create!(email: 'profesor@mail.com',name: 'Juan' ,surname: 'Araya' , rol: 1 ,status: true ,password: '111111',password_confirmation: '111111')
-
-# Ayudantes
-program.users.create!(email: 'ayudante@mail.com',name: 'Emma' ,surname: 'Watson' , rol: 2 ,status: true ,password: '111111',password_confirmation: '111111')
-
-# Estudiantes
-program.users.create!(email: 'estudiante@mail.com',name: 'Franco' ,surname: 'Gotelli' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
-program.users.create!(email: 'jorge.plaza@usach.cl',name: 'Jorge' ,surname: 'Plaza' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
-program.users.create!(email: 'juanmartinez965@gmail.com',name: 'Juan' ,surname: 'Martinez' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
-program.users.create!(email: 'daniel.gomez@usach.cl',name: 'Daniel' ,surname: 'Gomez' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
-program.users.create!(email: 'diego.salazar.se@usach.cl',name: 'Diego' ,surname: 'Salazar' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
-program.users.create!(email: 'franco.labra@usach.cl',name: 'Franco' ,surname: 'Labra' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
-program.users.create!(email: 'jose.mellado@usach.cl',name: 'José' ,surname: 'Mellado' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
-program.users.create!(email: 'marco.opazo@usach.cl',name: 'Marco' ,surname: 'Opazo' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
-program.users.create!(email: 'mauricio.soto.p@usach.cl',name: 'Mauricio' ,surname: 'Soto' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
-program.users.create!(email: 'rafael.segura@usach.cl',name: 'Rafael' ,surname: 'Segura' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
-program.users.create!(email: 'vicente.ortiz@usach.cl',name: 'Vicente' ,surname: 'Ortiz' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
-program.users.create!(email: 'vicente.rivera.r@usach.cl',name: 'Vicente' ,surname: 'Rivera' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
-
 # Secciones
 subject = Subject.create!(name: "Demeter", code: "DMT")
 
 type = SectionType.create!(name: "Laboratorio")
 
-Section.create!(subject: subject, section_type: type, code: 'A-1', semester: 2, year: 2017)
+section = Section.create!(subject: subject, section_type: type, code: 'A-1', semester: 2, year: 2017)
 
-# Relaciones: estudiante-sección
-UserSection.create(section_id: 1,user_id: 3) # 
-UserSection.create(section_id: 1,user_id: 4) # 
-UserSection.create(section_id: 1,user_id: 5) # 
-UserSection.create(section_id: 1,user_id: 6) # 
-UserSection.create(section_id: 1,user_id: 7) # 
-UserSection.create(section_id: 1,user_id: 8) # 
-UserSection.create(section_id: 1,user_id: 9) # 
-UserSection.create(section_id: 1,user_id: 10) # 
-UserSection.create(section_id: 1,user_id: 11) # 
-UserSection.create(section_id: 1,user_id: 12) # 
-UserSection.create(section_id: 1,user_id: 13) # 
-UserSection.create(section_id: 1,user_id: 14) # 
-UserSection.create(section_id: 1,user_id: 15) # 
-UserSection.create(section_id: 1,user_id: 16) # 
+(1..59).each do |index|
+    name = Faker::Name.first_name
+    surname = Faker::Name.last_name
+    email = name + surname + "@mail.com"
+    user = program.users.create!(email: email,name: name ,surname: surname, rol: 3 ,status: true ,password: '111111',password_confirmation: '111111', accept_model: true)
+    user.sections << section
+    for i in(1..3)
+        test = user.tests.create(kind: i, status: true, answered: true)
+        if i == 1
+            eneatype = rand(1..9)
+            Answer.create(test: test, element_kind: eneatype, number: 1, answer: eneatype)
+        else
+            type_test = i == 2 ? 1 : 0
+            randomUsers = [1..59].sample(2)
+            randomUsers.each do |u|
+                Answer.create(test: test  , element_kind: type_test, number: u, answer: 1)
+                Answer.create(test: test  , element_kind: type_test, number: u, answer: 0)
+            end
+        end
+    end
+end
 
+# Coordinadores
+coord = program.users.create!(email: 'coordinador@mail.com',name: 'Juan' ,surname: 'Gómez' , rol: 0 ,status: true ,password: '111111',password_confirmation: '111111')
+coord.sections << section
+# Profesores
+profe = program.users.create!(email: 'profesor@mail.com',name: 'Juan' ,surname: 'Araya' , rol: 1 ,status: true ,password: '111111',password_confirmation: '111111')
+profe.sections << section
+# Ayudantes
+ayu = program.users.create!(email: 'ayudante@mail.com',name: 'Emma' ,surname: 'Watson' , rol: 2 ,status: true ,password: '111111',password_confirmation: '111111')
+ayu.sections << section
+# Estudiantes
+estu = program.users.create!(email: 'estudiante@mail.com',name: 'Franco' ,surname: 'Gotelli' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
+estu.sections << section
