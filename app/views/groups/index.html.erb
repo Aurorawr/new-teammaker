@@ -82,11 +82,11 @@
                     </div>
                     <div class="card-content" style="background-color:#1e87da">
                         <div class=" row">
-                            <% section.groups.each do |number| %>
+                            <% section.groups.each do |user_section| %>
                             <div id="group<%= user_section.group_number.to_s + section.id.to_s %>">
                                 <% section.users.where(rol: 3).each do |estudiante| %>
 
-                                <% if estudiante.group != nil && estudiante.group.number == user_section.group_number %>
+                                <% if estudiante.group != nil && estudiante.group == user_section.group_number %>
                                 <!-- Modal Ver estudiante-->
                                 <div id="verEstudiante<%= estudiante.id%>" class="modal">
                                     <%= render :partial => "users/shared/show_user", locals: {user: estudiante} %>

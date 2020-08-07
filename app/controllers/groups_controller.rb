@@ -424,7 +424,7 @@ class GroupsController < ApplicationController
                 integrantes.each_with_index do |estu, idd|
                   if (idd+1) == element
                     puts "seccion: " + seccion.code.to_s + " numero: " + (i).to_s + " estudiante: " + estu.email.to_s 
-                    actualData = UserSection.where(section_id: seccion.id, user_id: estu.id)
+                    actualData = UserSection.find_by(section_id: seccion.id, user_id: estu.id)
                     actualData.group_number = i
                     actualData.save
                   end
@@ -436,7 +436,7 @@ class GroupsController < ApplicationController
  
         else
           ##puts " "
-          ##puts  "No es posible calcular grupos"
+          puts  "No es posible calcular grupos"
           @status = 'NO ES POSIBLE GENERAR LOS EQUIPOS DE:'
           @status_seccion = @status_seccion + ' / ' + seccion.code.to_s
           ##if grupos < residuo
