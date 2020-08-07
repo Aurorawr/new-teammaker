@@ -44,10 +44,11 @@ section = Section.create!(subject: subject, section_type: type, code: 'A-1', sem
     email = name + surname + "@mail.com"
     user = program.users.create!(email: email,name: name ,surname: surname, rol: 3 ,status: true ,password: '111111',password_confirmation: '111111', accept_model: true)
     user.sections << section
+    eneatype = rand(1..9)
+    Eneatype.create!(user: user, number: eneatype, score: 69)
     for i in(1..3)
         test = user.tests.create(kind: i, status: true, answered: true)
         if i == 1
-            eneatype = rand(1..9)
             Answer.create(test: test, element_kind: eneatype, number: 1, answer: eneatype)
         else
             type_test = i == 2 ? 1 : 0
