@@ -73,9 +73,9 @@
                     <p style="margin-bottom: 0px;">Estado test de afinidad social:</p>
                 </b>
 
-                <% if !user.tests.find(user.tests.find_by(kind: 2)).answered? %>
+                <% if !user.tests.find_by(kind: 2).answered? %>
                 <span class="new badge red" data-badge-caption="0/2 test" style="margin: 0;"></span>
-                <% elsif !user.tests.find(user.tests.find_by(kind: 3)).answered? %>
+                <% elsif !user.tests.find_by(kind: 3).answered? %>
                 <span class="new badge amber darken-1" data-badge-caption="1/2 test" style="margin: 0;"></span>
                 <% else %>
                 <span class="new badge green" data-badge-caption="Test resueltos" style="margin: 0;"></span>

@@ -33,7 +33,7 @@ class PsychologicalController < ApplicationController
           end   
         end
       elsif current_user.test_count == 5
-        user_test = current_user.tests.find(current_user.tests.where(kind: 1))
+        user_test = current_user.tests.find_by(kind: 1)
         if user_test.answered == false
           for i in 1..45
             if (1..5) === i

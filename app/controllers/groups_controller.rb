@@ -21,7 +21,7 @@ class GroupsController < ApplicationController
         valido = true
         estudiantes.each do |e|
           if Test.exists?(user_id: e.id, kind: 1) 
-            if e.tests.find(e.tests.where(kind: 1)).answered? && e.tests.find(e.tests.where(kind: 2)).answered? && e.tests.find(e.tests.where(kind: 3)).answered?
+            if e.tests.where(kind: 1, answered: true).present? && e.tests.where(kind: 2, answered: true).present?  && e.tests.where(kind: 3, answered: true).present? 
               @personas << e
               @show = 1
             end 
@@ -35,8 +35,8 @@ class GroupsController < ApplicationController
 
         @Mscod = Matrix.build(@personas.size, @personas.size){ '!!!!' }
         @personas.each_with_index do |p, index|
-          positivo = p.tests.find(p.tests.where(kind: 2)).answers
-          negativo = p.tests.find(p.tests.where(kind: 3)).answers
+          positivo = p.tests.find_by(kind: 2).answers
+          negativo = p.tests.find_by(kind: 3).answers
           
           positivo.each do |creeAceptacion|
             if creeAceptacion.answer == 0 # si cree
