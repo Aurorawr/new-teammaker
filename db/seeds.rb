@@ -44,6 +44,7 @@ section = Section.create!(subject: subject, section_type: type, code: 'A-1', sem
     email = name + surname + "@mail.com"
     user = program.users.create!(email: email,name: name ,surname: surname, rol: 3 ,status: true ,password: '111111',password_confirmation: '111111', accept_model: true)
     user.sections << section
+    user.save
     eneatype = rand(1..9)
     Eneatype.create!(user: user, number: eneatype, score: 69)
     for i in(1..3)
