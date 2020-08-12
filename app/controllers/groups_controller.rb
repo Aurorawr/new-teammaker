@@ -212,9 +212,9 @@ class GroupsController < ApplicationController
             end
           end
         end
-        puts "test: #{@program_matrix}"
-        puts "Dims 1: #{@Me}"
-        puts "Dims 2: #{@Ms}"
+        puts "test: #{@program_matrix.column_size} #{@program_matrix.row_size}"
+        puts "Dims 1: #{@Me.column_size} #{@Me.row_size}"
+        puts "Dims 2: #{@Ms.column_size} #{@Me.row_size}"
         # Matriz social codificada 
         @Mes = Matrix[]
         @Mes = @Me + @Ms + @program_matrix
@@ -415,13 +415,7 @@ class GroupsController < ApplicationController
           for i in 1..@grupos[indice].row_size 
             @grupos[indice].row(i-1).each do |element| 
               if element != 'x' 
-                integrantes = []
-                seccion.users.where(rol: 3).each do |e|
-                  if e.tests.exists? && e.tests.first.answered? && e.tests.second.answered? && e.tests.last.answered?
-                    integrantes << e
-                  end
-                end
-                integrantes.each_with_index do |estu, idd|
+                @personas.each_with_index do |estu, idd|
                   if (idd+1) == element
                     puts "seccion: " + seccion.code.to_s + " numero: " + (i).to_s + " estudiante: " + estu.email.to_s 
                     actualData = UserSection.find_by(section_id: seccion.id, user_id: estu.id)
@@ -444,7 +438,6 @@ class GroupsController < ApplicationController
           ##end
           ##puts " "
         end
-
       end #ciclo
     end # condicion de busqueda
   end # fin index
