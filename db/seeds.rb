@@ -42,7 +42,8 @@ section = Section.create!(subject: subject, section_type: type, code: 'A-1', sem
     name = Faker::Name.first_name
     surname = Faker::Name.last_name
     email = name + surname + "@mail.com"
-    user = program.users.create!(email: email,name: name ,surname: surname, rol: 3 ,status: true ,password: '111111',password_confirmation: '111111', accept_model: true)
+    gender = [0, 1].sample
+    user = program.users.create!(email: email,name: name ,surname: surname, rol: 3 ,status: true ,password: '111111',password_confirmation: '111111', sex: gender, accept_model: true)
     user.sections << section
     user.save
     eneatype = rand(1..9)
