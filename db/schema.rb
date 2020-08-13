@@ -113,7 +113,7 @@ ActiveRecord::Schema.define(version: 2020_07_11_230627) do
     t.inet "last_sign_in_ip"
     t.string "name"
     t.string "surname"
-    t.string "sex"
+    t.integer "sex"
     t.integer "test_count", default: 0, null: false
     t.integer "rol", default: 3, null: false
     t.boolean "status", default: true, null: false

@@ -439,7 +439,17 @@ class GroupsController < ApplicationController
           ##puts " "
         end
       end #ciclo
-    end # condicion de busqueda
+    else # condicion de busqueda
+        @groups_formed  = UserSection.select(:group_number).distinct.order(:group_number)
+        @group_members = Hash.new
+        @groups_formed.each do |us|
+            if  us.group_number.present?
+                number =  us.group_number
+                members = UserSection.where(group_number: number).joins(:user)
+                @group_members[number] = members
+            end
+        end
+    end
   end # fin index
 
 
