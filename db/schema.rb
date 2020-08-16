@@ -114,6 +114,7 @@ ActiveRecord::Schema.define(version: 2020_07_11_230627) do
     t.string "name"
     t.string "surname"
     t.integer "sex"
+    t.integer "age"
     t.integer "test_count", default: 0, null: false
     t.integer "rol", default: 3, null: false
     t.boolean "status", default: true, null: false
