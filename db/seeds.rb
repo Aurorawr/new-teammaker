@@ -11,13 +11,13 @@ require 'faker'
 # Carreras
 inst = Institution.create(name: "Universidad de Santiago de Chile")
 
-Program.create!(name: "Administración Pública", institution: inst)#0
-Program.create!(name: "Ingeniería Ambiental", institution: inst) #1
-Program.create!(name: "Ingeniería Civil en Electricidad", institution: inst) #2
-Program.create!(name: "Ingeniería Civil en Geografía", institution: inst) #3<
-Program.create!(name: "Ingeniería Civil en Industria", institution: inst) #4
-Program.create!(name: "Ingeniería Civil en Informática", institution: inst) #5
-Program.create!(name: "Ingeniería Civil en Mecánica", institution: inst) #6
+program1 = Program.create!(name: "Administración Pública", institution: inst)#0
+program2 = Program.create!(name: "Ingeniería Ambiental", institution: inst) #1
+program3 = Program.create!(name: "Ingeniería Civil en Electricidad", institution: inst) #2
+program4 = Program.create!(name: "Ingeniería Civil en Geografía", institution: inst) #3<
+program5 = Program.create!(name: "Ingeniería Civil en Industria", institution: inst) #4
+program6 = Program.create!(name: "Ingeniería Civil en Informática", institution: inst) #5
+program7 = Program.create!(name: "Ingeniería Civil en Mecánica", institution: inst) #6
 Program.create!(name: "Ingeniería Civil en Metalurgia", institution: inst) #7
 Program.create!(name: "Ingeniería Civil en Minas", institution: inst) #8
 Program.create!(name: "Ingeniería Civil en Obras Civiles", institution: inst) #9
@@ -44,8 +44,9 @@ section = Section.create!(subject: subject, section_type: type, code: 'A-1', sem
     email = name + surname + "@mail.com"
     gender = [0, 1].sample
     age = rand(25..50)
-    user = program.users.create!(email: email,name: name ,surname: surname, rol: 3 ,status: true ,password: '111111',password_confirmation: '111111', sex: gender, age: age,  accept_model: true)
+    user = User.create!(email: email,name: name ,surname: surname, rol: 3 ,status: true ,password: '111111',password_confirmation: '111111', sex: gender, age: age,  accept_model: true)
     user.sections << section
+    user.programs << [program, program1, program2, program3, program4].sample
     user.save
     eneatype = rand(1..9)
     Eneatype.create!(user: user, number: eneatype, score: 69)
