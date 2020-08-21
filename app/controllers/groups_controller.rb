@@ -203,21 +203,21 @@ class GroupsController < ApplicationController
           end
         end
 
-        @program_matrix = Matrix.build(@personas.size) { 0 } 
+        @mp = Matrix.zero(@personas.size, 1)
+        @mg = Matrix.zero(@personas.size, 1)
+        @ma = Matrix.zero(@personas.size, 1)
 
-        @personas.each_with_index do |p1, index1|
-          @personas.each_with_index do |p2, index2|
-            if p1.programs.first != p2.programs.first 
-              @program_matrix.send(:[]=, index1, index2, 1)
-            end
-          end
+        @personas.each_with_index do |p, i|
+            @mp.send(:[]=, i, 0, p.programs.first.id.to_f)
+            @mg.send(:[]=, i, 0, p.sex.to_f)
+            @ma.send(:[]=, i, 0, p.age.to_f)
         end
-        puts "test: #{@program_matrix.column_size} #{@program_matrix.row_size}"
-        puts "Dims 1: #{@Me.column_size} #{@Me.row_size}"
-        puts "Dims 2: #{@Ms.column_size} #{@Me.row_size}"
+
+        @mpn = normalizar(@mp.clone)
+        @man = normalizar(@ma.clone)
         # Matriz social codificada 
         @Mes = Matrix[]
-        @Mes = @Me + @Ms + @program_matrix
+        @Mes = @Me + @Ms
         puts "Dims 3: #{@Ms}"
         @totalEstudiantes = @Mes.row_size
         # Correccion de decimales
@@ -229,17 +229,9 @@ class GroupsController < ApplicationController
 
         # 2.ALGORITMO GENETICO
         
-        @Map        = @Mes.clone             # Matriz de aptitud
-        min         = @Map.min               # Mínimo valor de la matriz enea-social
-        max         = @Map.max               # Máximo valor de la matriz enea-social
-        # Normalizar matriz de aptitud
-        for i in 1..@Map.row_size
-          @Map.row(i-1).each_with_index do |e, index|
-            @Map.send(:[]=, i-1, index, ((e-min)/(max-min)).round(2))
-          end
-        end
-          
-         
+        @Map =  normalizar(@Mes.clone )            # Matriz de aptitud
+        
+        @test = Matrix.hstack(@Map, @mpn, @man, @mg)
 
         ################################
 
@@ -438,20 +430,31 @@ class GroupsController < ApplicationController
           ##end
           ##puts " "
         end
+        byebug
       end #ciclo
-    else # condicion de busqueda
-        @groups_formed  = UserSection.select(:group_number).distinct.order(:group_number)
-        @group_members = Hash.new
-        @groups_formed.each do |us|
-            if  us.group_number.present?
-                number =  us.group_number
-                members = UserSection.where(group_number: number).joins(:user)
-                @group_members[number] = members
-            end
+    end
+    @groups_formed  = UserSection.select(:group_number).distinct.order(:group_number)
+    @group_members = Hash.new
+    @groups_formed.each do |us|
+        if  us.group_number.present?
+            number =  us.group_number
+            members = UserSection.where(group_number: number).joins(:user)
+            @group_members[number] = members
         end
     end
   end # fin index
 
+  def normalizar(matriz)
+    min = matriz.min
+    max = matriz.max     
+    # Normalizar matriz de aptitud
+    for i in 1..matriz.row_size
+        matriz.row(i-1).each_with_index do |e, index|
+            matriz.send(:[]=, i-1, index, ((e-min)/(max-min)).round(2))
+      end
+    end
+    return matriz
+end
 
   def childrens_fix(f,p_children,estudiantes)
     #puts "FIIIIIIX"
