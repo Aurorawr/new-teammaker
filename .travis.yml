@@ -1,0 +1,25 @@
+language: generic
+sudo: required
+services:
+    - docker
+
+script:
+    - docker build -t aurorawr/new-teammaker ./docker/app/Dockerfile 
+    - docker build -t aurorawr/aurorapps-nginx ./docker/web/Dockerfile
+    # Log in docker cli
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    # Push to dockerhub
+    - docker push aurorawr/new-teammaker
+    - docker push aurorawr/aurorapps-nginx
+
+    deploy:
+        provider: elasticbeanstalk
+        region: s-east-1
+        app: docker-test
+        env: NewTeammaker-env
+        bucket_name: elasticbeanstalk-us-east-1-704738736845
+        bucket_path: docker-test
+        on:
+            branch: master
+        access_key_id: $AWS_ACCESS_KEY
+        secret_access_key: $AWS_SECRET_KEY
