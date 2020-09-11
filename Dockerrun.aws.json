@@ -5,13 +5,15 @@
             "name": "app",
             "image": "aurorawr/new-teammaker",
             "hostname": "app",
-            "essential": false
+            "essential": true,
+            "memory": 512
         },
         {
             "name": "db",
             "image": "postgres",
             "hostname": "db",
-            "essential": false,
+            "essential": true,
+            "memory": 512,
             "environment": [
                 {
                     "name": "POSTGRES_PASSWORD",
@@ -24,6 +26,7 @@
             "image": "aurorawr/aurorapps-nginx",
             "hostname": "web",
             "essential": true,
+            "memory": 512,
             "portMappings": [
                 {
                     "hostPort": 80,
