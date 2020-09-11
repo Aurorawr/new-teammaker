@@ -14,11 +14,11 @@ script:
 
 deploy:
     provider: elasticbeanstalk
-    region: s-east-1
-    app: docker-test
+    region: us-east-1
+    app: new_teammaker
     env: NewTeammaker-env
     bucket_name: elasticbeanstalk-us-east-1-704738736845
-    bucket_path: docker-test
+    bucket_path: new_teammaker
     on:
         branch: master
     access_key_id: $AWS_ACCESS_KEY
