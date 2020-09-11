@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.7.0'
+ruby '2.7.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.1'
@@ -68,7 +68,7 @@ gem 'materialize-sass'
 gem 'will_paginate'
 gem 'will_paginate-materialize'
 
-gem 'haml-rails'
-
 gem "actionpack", ">= 6.0.3.2"
 gem "rack", ">= 2.2.3"
+
+gem "faker"

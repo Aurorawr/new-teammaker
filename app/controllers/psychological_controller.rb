@@ -33,7 +33,7 @@ class PsychologicalController < ApplicationController
           end   
         end
       elsif current_user.test_count == 5
-        user_test = current_user.tests.find(current_user.tests.where(kind: 1))
+        user_test = current_user.tests.find_by(kind: 1)
         if user_test.answered == false
           for i in 1..45
             if (1..5) === i
@@ -76,7 +76,7 @@ class PsychologicalController < ApplicationController
             current_user.update(test_count: 6)
             redirect_to test_eneagrama_path, notice: "Test realizado con éxito"       
           else
-            redirect_to :back, alert: "No se a podido procesar la solicitud"        
+            redirect_back(fallback_location: test_eneagrama_path, alert: "No se ha podido procesar la solicitud")
           end
         else
           redirect_to test_eneagrama_path, alert: "test ya respondido"        

@@ -21,7 +21,7 @@ class GroupsController < ApplicationController
         valido = true
         estudiantes.each do |e|
           if Test.exists?(user_id: e.id, kind: 1) 
-            if e.tests.find(e.tests.where(kind: 1)).answered? && e.tests.find(e.tests.where(kind: 2)).answered? && e.tests.find(e.tests.where(kind: 3)).answered?
+            if e.tests.where(kind: 1, answered: true).present? && e.tests.where(kind: 2, answered: true).present?  && e.tests.where(kind: 3, answered: true).present? 
               @personas << e
               @show = 1
             end 
@@ -35,8 +35,8 @@ class GroupsController < ApplicationController
 
         @Mscod = Matrix.build(@personas.size, @personas.size){ '!!!!' }
         @personas.each_with_index do |p, index|
-          positivo = p.tests.find(p.tests.where(kind: 2)).answers
-          negativo = p.tests.find(p.tests.where(kind: 3)).answers
+          positivo = p.tests.find_by(kind: 2).answers
+          negativo = p.tests.find_by(kind: 3).answers
           
           positivo.each do |creeAceptacion|
             if creeAceptacion.answer == 0 # si cree
@@ -203,21 +203,21 @@ class GroupsController < ApplicationController
           end
         end
 
-        @career_matrix = Matrix.build(@personas.size) { 0 } 
+        @mp = Matrix.zero(@personas.size, 1)
+        @mg = Matrix.zero(@personas.size, 1)
+        @ma = Matrix.zero(@personas.size, 1)
 
-        @personas.each_with_index do |p1, index1|
-          @personas.each_with_index do |p2, index2|
-            if p1.career_id != p2.career_id 
-              @career_matrix.send(:[]=, index1, index2, 1)
-            end
-          end
+        @personas.each_with_index do |p, i|
+            @mp.send(:[]=, i, 0, p.programs.first.id.to_f)
+            @mg.send(:[]=, i, 0, p.sex.to_f)
+            @ma.send(:[]=, i, 0, p.age.to_f)
         end
-        puts "test: #{@career_matrix}"
-        puts "Dims 1: #{@Me}"
-        puts "Dims 2: #{@Ms}"
+
+        @mpn = normalizar(@mp.clone)
+        @man = normalizar(@ma.clone)
         # Matriz social codificada 
         @Mes = Matrix[]
-        @Mes = @Me + @Ms + @career_matrix
+        @Mes = @Me + @Ms
         puts "Dims 3: #{@Ms}"
         @totalEstudiantes = @Mes.row_size
         # Correccion de decimales
@@ -229,17 +229,9 @@ class GroupsController < ApplicationController
 
         # 2.ALGORITMO GENETICO
         
-        @Map        = @Mes.clone             # Matriz de aptitud
-        min         = @Map.min               # Mínimo valor de la matriz enea-social
-        max         = @Map.max               # Máximo valor de la matriz enea-social
-        # Normalizar matriz de aptitud
-        for i in 1..@Map.row_size
-          @Map.row(i-1).each_with_index do |e, index|
-            @Map.send(:[]=, i-1, index, ((e-min)/(max-min)).round(2))
-          end
-        end
-          
-         
+        @Map =  normalizar(@Mes.clone )            # Matriz de aptitud
+        
+        @test = Matrix.hstack(@Map, @mpn, @man, @mg)
 
         ################################
 
@@ -415,16 +407,10 @@ class GroupsController < ApplicationController
           for i in 1..@grupos[indice].row_size 
             @grupos[indice].row(i-1).each do |element| 
               if element != 'x' 
-                integrantes = []
-                seccion.users.where(rol: 3).each do |e|
-                  if e.tests.exists? && e.tests.first.answered? && e.tests.second.answered? && e.tests.last.answered?
-                    integrantes << e
-                  end
-                end
-                integrantes.each_with_index do |estu, idd|
+                @personas.each_with_index do |estu, idd|
                   if (idd+1) == element
                     puts "seccion: " + seccion.code.to_s + " numero: " + (i).to_s + " estudiante: " + estu.email.to_s 
-                    actualData = UserSection.where(section_id: seccion.id, user_id: estu.id)
+                    actualData = UserSection.find_by(section_id: seccion.id, user_id: estu.id)
                     actualData.group_number = i
                     actualData.save
                   end
@@ -436,7 +422,7 @@ class GroupsController < ApplicationController
  
         else
           ##puts " "
-          ##puts  "No es posible calcular grupos"
+          puts  "No es posible calcular grupos"
           @status = 'NO ES POSIBLE GENERAR LOS EQUIPOS DE:'
           @status_seccion = @status_seccion + ' / ' + seccion.code.to_s
           ##if grupos < residuo
@@ -444,11 +430,31 @@ class GroupsController < ApplicationController
           ##end
           ##puts " "
         end
-
+        byebug
       end #ciclo
-    end # condicion de busqueda
+    end
+    @groups_formed  = UserSection.select(:group_number).distinct.order(:group_number)
+    @group_members = Hash.new
+    @groups_formed.each do |us|
+        if  us.group_number.present?
+            number =  us.group_number
+            members = UserSection.where(group_number: number).joins(:user)
+            @group_members[number] = members
+        end
+    end
   end # fin index
 
+  def normalizar(matriz)
+    min = matriz.min
+    max = matriz.max     
+    # Normalizar matriz de aptitud
+    for i in 1..matriz.row_size
+        matriz.row(i-1).each_with_index do |e, index|
+            matriz.send(:[]=, i-1, index, ((e-min)/(max-min)).round(2))
+      end
+    end
+    return matriz
+end
 
   def childrens_fix(f,p_children,estudiantes)
     #puts "FIIIIIIX"
@@ -738,4 +744,5 @@ class GroupsController < ApplicationController
     end
   end
   
+end
 end

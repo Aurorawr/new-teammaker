@@ -4,7 +4,7 @@ class UsersController < ApplicationController
 		if user_signed_in? && current_user.rol == 0
 			@user = User.new
 			@sections = Section.all
-			@careers = Career.all
+			@programs = Program.all
 			
 		  per_page = 5
 		  if params[:per_page]
@@ -35,10 +35,10 @@ class UsersController < ApplicationController
 	  @user = User.find(params[:id])
 	  @sections = params[:sections]
 
-	  if  @sections == nil
-    	redirect_to :back, alert: "Usuario sin sección"
+      if  @sections == nil
+        redirect_back(fallback_location: users_path, alert: "Usuario sin sección")
     elsif params[:user][:rol].to_i == 3 && @sections.count > 1
-    	redirect_to :back, alert: "Estudiantes solo pueden tener 1 sección"
+        redirect_back(fallback_location: users_path, alert: "Estudiantes solo pueden tener una sección")
     else
 		  @userSection = UserSection.where(user_id: @user.id)
 
@@ -53,9 +53,9 @@ class UsersController < ApplicationController
 		  end
 
 		  if @user.update(user_params)
-		   	redirect_to :back, notice: "Usuario actualizado con éxito"	   		
+		   	redirect_back(fallback_location: users_path, notice: "Usuario editado con éxito")
 		  else
-		  	redirect_to :back, alert: "No se a podido procesar la solicitud"	   		
+            redirect_back(fallback_location: users_path, alert: "No se ha podido procesar la solicitud")
 		  end
 		end
 	end
@@ -86,8 +86,8 @@ class UsersController < ApplicationController
 
 	  if @user.destroy
 	  	redirect_to(usuarios_path, notice: "Usuario eliminado con éxito")   		
-	  else
-	  	redirect_to :back, alert: "No se a podido procesar la solicitud"
+      else
+        redirect_back(fallback_location: users_path, alert: "No se ha podido procesar la solicitud")
 	  end
 	end
 
@@ -106,29 +106,29 @@ class UsersController < ApplicationController
 		    		@user = User.import(params[:file])
 		    		if $mark_import == false
 		    			redirect_to(usuarios_path, notice: "Usuarios importados")
-		    		else
-		    			redirect_to :back, alert: "En la fila número " + $mensaje_numero.to_s + " del archivo: 'Nombre: " +  $mensaje_nombre.to_s + ", Apellido: " + $mensaje_apeliido.to_s + ", Correo: " + $mensaje_correo.to_s + ", Sección: " +  $mensaje_section.to_s + " y Clave: " + $mensaje_clave.to_s + "', hay datos inválidos. Por favor, revise los datos."
+                    else
+                        redirect_back(fallback_location: users_path, alert: "En la fila número " + $mensaje_numero.to_s + " del archivo: 'Nombre: " +  $mensaje_nombre.to_s + ", Apellido: " + $mensaje_apeliido.to_s + ", Correo: " + $mensaje_correo.to_s + ", Sección: " +  $mensaje_section.to_s + " y Clave: " + $mensaje_clave.to_s + "', hay datos inválidos. Por favor, revise los datos.")
 		    		end
 		    	elsif $problem == true && $mark == 3
-		    		redirect_to :back, alert: "El archivo contiene estudiantes sin sección válida. Los estudiantes son: " + $persons
+                    redirect_back(fallback_location: users_path, alert: "El archivo contiene estudiantes sin sección válida. Los estudiantes son: " + $persons)
 		    	elsif $problem == true && $mark == 1
-		    		#flash[:danger] = "El archivo contiene usuarios que ya existen en el sistema. Los siguientes RUN contienen datos ya existentes: " + $count.to_s
-		    		redirect_to :back, alert: "El archivo contiene estudiantes que ya existen en el sistema. Los siguientes CORREOS contienen datos ya existentes: " + $persons
-		    	else
-		    		redirect_to :back, alert: "Los nombres de las columnas del archivo son incorrectas. Recuerde que deben llamarse: email,name,surname,password,section."
+                    #flash[:danger] = "El archivo contiene usuarios que ya existen en el sistema. Los siguientes RUN contienen datos ya existentes: " + $count.to_s
+                    redirect_back(fallback_location: users_path, alert: "El archivo contiene estudiantes que ya existen en el sistema. Los siguientes CORREOS contienen datos ya existentes: " + $persons)
+                else
+                    redirect_back(fallback_location: users_path, alert: "Los nombres de las columnas del archivo son incorrectas. Recuerde que deben llamarse: email,name,surname,password,section.")
 		    	end			    
-		    else
-		    	redirect_to :back, alert: "No se ha podido cargar el archivo al sistema. Debe ser un archivo .csv"
+            else
+                redirect_back(fallback_location: users_path, alert: "No se ha podido cargar el archivo al sistema. Debe ser un archivo .csv")
 		    end
-		else
-			redirect_to :back, alert: "No se ha seleccionado ningún archivo para importar"
+        else
+            redirect_back(fallback_location: users_path, alert: "No se ha seleccionado ningún archivo para importar")
 		end
 
 	end
 
 	private
 	def user_params
-	  params.require(:user).permit(:email, :name, :surname, :rol, :career, :section, :status, :password, :password_confirmation, :accept_model, :study_group)
+	  params.require(:user).permit(:email, :name, :surname, :rol, :section, :status, :password, :password_confirmation, :accept_model, :study_group)
 	end
 
 end

@@ -1,5 +1,5 @@
 class RegistrationsController < Devise::RegistrationsController
-    skip_before_filter :require_no_authentication, raise: false
+    skip_before_action :require_no_authentication, raise: false
   
     def new
       if user_signed_in? && current_user.rol == 0 
@@ -15,11 +15,11 @@ class RegistrationsController < Devise::RegistrationsController
         @user = User.new(user_params)
         @sections = params[:sections]
         if @sections == nil
-          redirect_to :back
+        redirect_back(fallback_location: users_path)
           flash[:alert] = "Usuario sin sección"
         else    
           if @user.rol == 3 && @sections.count > 1
-            redirect_to :back
+            redirect_back(fallback_location: users_path)
             errors = "Estudiantes solo pueden tener 1 sección"
             flash[:alert] = errors
           else
@@ -30,9 +30,9 @@ class RegistrationsController < Devise::RegistrationsController
             #  elsif current_user.rol == 1
             #    UserSection.create(section_id: @sections.to_i,user_id: @user.id)
             #  UserMailer.registration_confirmation(@user).deliver_now
-              redirect_to :back , notice: "¡Usuario " + @user.email + " registrado con exito!"
+                redirect_back(fallback_location: users_path, notice: "¡Usuario " + @user.email + " registrado con exito!")
             else
-              redirect_to :back
+               redirect_back(fallback_location: users_path)
               if @user.errors.any?
                 @user.errors.full_messages.each do |msg|
                   errors = msg + '. ' + errors
@@ -49,7 +49,7 @@ class RegistrationsController < Devise::RegistrationsController
     
     private
     def user_params
-      params.require(:user).permit(:email, :name, :surname, :rol, :career_id, :section, :status, :password, :password_confirmation, :accept_model, :study_group)
+      params.require(:user).permit(:email, :name, :surname, :rol, :section, :status, :password, :password_confirmation, :accept_model, :study_group)
     end
   
   end

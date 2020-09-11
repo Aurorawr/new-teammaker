@@ -84,5 +84,6 @@ test:
 production:
   <<: *default
   database: new_team_maker_production
-  username: new_team_maker
-  password: <%= ENV['NEW_TEAM_MAKER_DATABASE_PASSWORD'] %>
+  username: postgres
+  password: tm1234
+  host: db

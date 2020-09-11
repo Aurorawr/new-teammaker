@@ -19,7 +19,7 @@ class SectionsController < ApplicationController
     if user_signed_in? && UserSection.exists?(section_id: @seccion.id, user_id: current_user.id)
 
       @sections = Section.all
-      @careers = Career.all
+      @programs = Program.all
 
       @user = User.new
 
