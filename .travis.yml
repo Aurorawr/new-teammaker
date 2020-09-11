@@ -4,8 +4,8 @@ services:
     - docker
 
 script:
-    - docker build -t aurorawr/new-teammaker ./docker/app/Dockerfile 
-    - docker build -t aurorawr/aurorapps-nginx ./docker/web/Dockerfile
+    - docker build -t aurorawr/new-teammaker ./docker/app
+    - docker build -t aurorawr/aurorapps-nginx ./docker/web
     # Log in docker cli
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
     # Push to dockerhub
