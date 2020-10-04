@@ -59,14 +59,3 @@
 #     auth_methods: %w(publickey password)
 #     # password: "please use keys"
 #   }
-
-require "capistrano/setup"
-require "capistrano/deploy"
-require "capistrano/bundler"
-require "capistrano/rvm"
-require "capistrano/rails/assets"
-require "capistrano/rails/migrations"
-
-require "capistrano/scm/git"
-install_plugin Capistrano::SCM::git
-Dir.glob("lib/capistrano/tasks/*.rake").each {  |r| import r }
