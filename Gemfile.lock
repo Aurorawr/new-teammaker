@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/virgoproz/capistrano-master-key
+  revision: aa99a50e41733288a5d4e1884af16385855847de
+  specs:
+    capistrano-master-key (1.0.2)
+      capistrano (~> 3.11)
+      sshkit (~> 1.17)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -297,6 +305,7 @@ DEPENDENCIES
   byebug
   capistrano
   capistrano-bundler
+  capistrano-master-key!
   capistrano-rails
   capistrano-rvm
   capybara (>= 2.15)

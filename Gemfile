@@ -56,6 +56,7 @@ group :development, :test do
   gem 'capistrano-rvm'
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
+  gem 'capistrano-master-key', git: "https://github.com/virgoproz/capistrano-master-key"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
