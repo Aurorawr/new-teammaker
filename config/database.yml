@@ -85,5 +85,4 @@ production:
   <<: *default
   database: new_team_maker_production
   username: postgres
-  password: tm1234
-  host: db
+  password:
