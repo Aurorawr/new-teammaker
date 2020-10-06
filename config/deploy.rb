@@ -40,6 +40,7 @@ set :keep_releases, 3
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
 
+set :linked_files, fetch(:linked_files, []).push("config/master.key")
 set :rvm_type, :user
 set :rvm_ruby_version, '2.7.1'
 set :rvm_binary, '~/.rvm/bin/rvm'
