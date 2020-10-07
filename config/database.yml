@@ -83,5 +83,5 @@ test:
 #
 production:
   <<: *default
-  database: new_team_maker_production
+  database: test_db
   password: newtm369
