@@ -25,6 +25,8 @@ set :puma_preload_app, true
 set :puma_worker_timeout, nil
 set :puma_init_active_record, true  # Change to true if using ActiveRecord
 
+set :linked_files, fetch(:linked_files, []).push("config/master.key")
+
 namespace :puma do
     desc 'Create Directories for Puma Pids and Socket'
     task :make_dirs do
