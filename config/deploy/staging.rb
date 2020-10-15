@@ -17,12 +17,12 @@
 # property set. Specify the username and a domain or IP for the server.
 # Don't use `:all`, it's a meta role.
 
-role :app, %w{ubuntu@ec2-18-234-216-166.compute-1.amazonaws.com}
-role :web, %w{ubuntu@ec2-18-234-216-166.compute-1.amazonaws.com}
-role :db,  %w{ubuntu@ec2-18-234-216-166.compute-1.amazonaws.com}
+#role :app, %w{ubuntu@ec2-18-234-216-166.compute-1.amazonaws.com}
+#role :web, %w{ubuntu@ec2-18-234-216-166.compute-1.amazonaws.com}
+#role :db,  %w{ubuntu@ec2-18-234-216-166.compute-1.amazonaws.com}
 
 set :user, "ubuntu"
-server "ec2-18-234-216-166.compute-1.amazonaws.com", roles: %w{app web db}
+server "ec2-3-95-173-233.compute-1.amazonaws.com", roles: [:app, :web, :db]
 # set :master_key_local_path, "/home/lucas/Documents/Memoria/new-team-maker/config/master.key"
 
 
