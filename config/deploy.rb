@@ -53,6 +53,7 @@ namespace :deploy do
     task :initial do
         on roles(:app) do
             before 'deploy:restart', 'puma:start'
+            invoke 'setup:copy_linked_master_key'
             invoke 'deploy'
         end
     end
