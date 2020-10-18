@@ -430,7 +430,6 @@ class GroupsController < ApplicationController
           ##end
           ##puts " "
         end
-        byebug
       end #ciclo
     end
     @groups_formed  = UserSection.select(:group_number).distinct.order(:group_number)
