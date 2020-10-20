@@ -140,12 +140,6 @@ class SectionsController < ApplicationController
 
     def home
         @seccion = Section.find(params[:id])
-        for i in(1..3)
-            if current_user.tests.find_by(kind: i).nil?
-                current_user.tests.create(kind: i, status: true, answered: false)
-                current_user.update(test_count: 1)
-            end
-        end
         @psycho_test_answered = current_user.tests.find_by(kind: 1).answered
         @social_test_answered = current_user.tests.find_by(kind: 2).answered && current_user.tests.find_by(kind: 2)
     end

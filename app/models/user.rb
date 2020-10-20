@@ -10,6 +10,9 @@ class User < ApplicationRecord
   has_one :eneatype
   has_and_belongs_to_many :programs
 
+  before_create :init_tests_conf
+  after_create :init_tests
+
   def group
     self.user_sections.first.group_number
   end
@@ -129,6 +132,21 @@ class User < ApplicationRecord
   def sections=(value)
     @sections = value
   end
+
+  def init_tests
+    if self.rol == 3
+        for i in(1..3)
+            self.tests.create(kind: i, status: true, answered: false)
+        end
+    end
+  end
+
+  def init_tests_conf
+    if self.rol == 3
+        self.accept_model = true
+        self.test_count = 1
+    end
+end
 
   private  
   def self.search(search, search_rol, search_status)
