@@ -735,11 +735,11 @@ end
 
   def my_group
     if current_user.group != nil
-      group = UserSection.where(group_number: current_user.group.number, section_id: current_user.sections.first.id )
-      my_group = []
+      group_user_sections = UserSection.where(group_number: current_user.group, section_id: current_user.sections.first.id )
+      @my_group = []
 
-      group.each_with_index do |estudiante, index|
-        @my_group[index] = estudiante
+      group_user_sections.each_with_index do |user_section, index|
+        @my_group[index] = user_section.user
     end
   end
   
