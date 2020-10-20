@@ -7,7 +7,11 @@ Rails.application.routes.draw do
     collection { post :import}
   end
 
-  resources :sections
+  resources :sections do
+      member do
+          get 'home'
+      end
+  end
   
   get 'test_social' => 'social#index'
   get 'test_social/test' => 'social#test' 
@@ -20,6 +24,7 @@ Rails.application.routes.draw do
   get 'usuarios' => 'users#index'
   get 'secciones/test' => 'sections#index' 
   get 'seccion/:id' => 'sections#show' 
+  get 'my_sections' => 'sections#my_sections'
 
   get 'grupos' => 'groups#index'
   post  'grupos' => 'groups#index' 
