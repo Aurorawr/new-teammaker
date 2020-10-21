@@ -1,3 +1,5 @@
+require 'csv'
+
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -82,9 +84,9 @@ class User < ApplicationRecord
     begin
       CSV.foreach(file.path, headers: true) do |row|
         if count_errors == 0
-          section = Section.find_by(section: row["section"])
-          program = Program.find_by(name: row["program"])
-          User.create!(name: row["name"], surname: row["surname"], email: row["email"], password: row["password"], program: program)
+          section = Section.find_by(code: row["section"])
+          program = Program.find(row["program"])
+          program.users.create!(name: row["name"], surname: row["surname"], email: row["email"], password: row["password"])
           UserSection.create!(section_id: section.id, user_id: User.last.id)
         end
       end
@@ -114,7 +116,7 @@ class User < ApplicationRecord
           end
         end
 
-        if !Section.find_by(section: row["section"])
+        if !Section.find_by(code: row["section"])
           $persons[i] = row["email"]
           i = i + 1
           $problem = true
