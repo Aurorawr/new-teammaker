@@ -32,6 +32,8 @@ class User < ApplicationRecord
       valid_password = false
       valid_program = false
       valid_section = false
+      valid_gender = false
+      valid_age = false
 
       if row["name"] != nil && row["name"] != "" && row["name"] != " "
         valid_name = true
@@ -57,6 +59,14 @@ class User < ApplicationRecord
         valid_section = true
       end
 
+      if row["gender"] != nil && row["gender"] != "" && row["gender"] != " "
+        valid_section = true
+      end
+
+      if row["age"] != nil && row["age"] != "" && row["age"] != " "
+        valid_section = true
+      end
+
       if valid_name == true && valid_surname == true && valid_email == true && valid_password == true && valid_program && valid_section == true
         $mensaje_numero = $m
         $mensaje_nombre = row["name"]
@@ -65,6 +75,8 @@ class User < ApplicationRecord
         $mensaje_clave = row["password"]
         $mensaje_section = row["section"]
         $mensaje_program = row["program"]
+        $mensaje_gender = row["gender"]
+        $mensaje_age = row["age"]
       else
         $mark_import = true
         #$mensaje = row
@@ -77,6 +89,8 @@ class User < ApplicationRecord
         $mensaje_clave = row["password"]
         $mensaje_section = row["section"]
         $mensaje_program = row["program"]
+        $mensaje_gender = row["gender"]
+        $mensaje_age = row["age"]
         #raise "Problemas con fila"
       end
     end
@@ -86,7 +100,7 @@ class User < ApplicationRecord
         if count_errors == 0
           section = Section.find_by(code: row["section"])
           program = Program.find(row["program"])
-          program.users.create!(name: row["name"], surname: row["surname"], email: row["email"], password: row["password"])
+          program.users.create!(name: row["name"], surname: row["surname"], email: row["email"], password: row["password"], sex: row["gender"].to_i, age: row["age"].to_i)
           UserSection.create!(section_id: section.id, user_id: User.last.id)
         end
       end
@@ -97,7 +111,7 @@ class User < ApplicationRecord
   end
 
   def self.check(file)
-    @header_csv = ["email","name","surname","password","section","program"]
+    @header_csv = ["email","name","surname","password","section","program", "gender", "age"]
     csv = CSV.open(file.path, :col_sep => ",", :headers => true)
     @header_file = csv.read.headers
     @users = User.all
