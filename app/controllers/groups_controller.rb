@@ -229,9 +229,9 @@ class GroupsController < ApplicationController
 
         # 2.ALGORITMO GENETICO
         
-        @Map =  normalizar(@Mes.clone )            # Matriz de aptitud
+        @Map_pre =  normalizar(@Mes.clone )            # Matriz de aptitud
         
-        @test = Matrix.hstack(@Map, @mpn, @man, @mg)
+        @Map = Matrix.hstack(@Map_pre, @mpn, @man, @mg)
 
         ################################
 
