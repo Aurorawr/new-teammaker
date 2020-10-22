@@ -400,10 +400,10 @@ class GroupsController < ApplicationController
           @grupos[indice] = solutions[min].clone
           @section_title[indice] = seccion.code.to_s
 
-          if UserSection.where(section_id: seccion.id).groups_formed.count > 0
-            grupadelete = UserSection.where(section_id: seccion.id).groups_formed
-            grupadelete.destroy_all
-          end
+          #if UserSection.where(section_id: seccion.id).groups_formed.count > 0
+          #  grupadelete = UserSection.where(section_id: seccion.id).groups_formed
+          #  grupadelete.destroy_all
+          #end
           for i in 1..@grupos[indice].row_size 
             @grupos[indice].row(i-1).each do |element| 
               if element != 'x' 
