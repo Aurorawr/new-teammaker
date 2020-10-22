@@ -10,9 +10,14 @@ class RegistrationsController < Devise::RegistrationsController
     end
   
     def create
+        puts "hey"
+        puts params
       if current_user.rol == 0 || current_user.rol == 1
         errors = ''
+        program_id = params["user"]["program_id"]
+        program = Program.find(program_id)
         @user = User.new(user_params)
+        @user.programs << program
         @sections = params[:sections]
         if @sections == nil
         redirect_back(fallback_location: users_path)
