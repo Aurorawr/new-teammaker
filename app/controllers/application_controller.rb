@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
     # ensoteam.usach@gmail.com http8080
-	protect_from_forgery with: :exception
+    protect_from_forgery with: :exception
+    skip_before_action :verify_authenticity_token
 
 	before_action :banned?
 

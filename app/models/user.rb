@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_many :user_sections
   has_many :sections, :through => :user_sections
   has_many :tests
-  has_one :eneatype
+  has_one :eneatype, dependent: :destroy
   has_and_belongs_to_many :programs
 
   before_create :init_tests_conf
