@@ -432,15 +432,23 @@ class GroupsController < ApplicationController
         end
       end #ciclo
     end
-    @groups_formed  = UserSection.select(:group_number).distinct.order(:group_number)
-    @group_members = Hash.new
-    @groups_formed.each do |us|
-        if  us.group_number.present?
-            number =  us.group_number
-            members = UserSection.where(group_number: number).joins(:user)
-            @group_members[number] = members
+    @section_groups = Hash.new
+    @sections_show.each do |section|
+        @groups_formed  = section.user_sections.select(:group_number).distinct.order(:group_number)
+        @group_members = Hash.new
+        @groups_formed.each do |us|
+            if  us.group_number.present?
+                number =  us.group_number
+                members = UserSection.where(group_number: number).joins(:user)
+                @group_members[number] = members
+            end
         end
+        @section_groups[section.id] = @group_members
     end
+    @section_groups[1].each do |k, v|
+        puts v
+    end
+
   end # fin index
 
   def normalizar(matriz)

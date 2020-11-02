@@ -75,19 +75,17 @@
                     <% if section.groups.exists? %>
                     <div class="card-tabs">
                         <ul class="tabs tabs-fixed-width tabs-transparent">
-                            <% @groups_formed.each do |group| %>
-                                 <% if group.group_number.present? %>
-                                    <li class="tab"><a href="#group<%= group.group_number.to_s + section.id.to_s %>">grupo <%= group.group_number %></a></li>
-                                <% end %>
+                            <% @section_groups[section.id].each do |group_number, members| %>
+                                <li class="tab"><a href="#group<%= group_number.to_s + section.id.to_s %>">grupo <%= group_number %></a></li>
                             <% end %>
                         </ul>
                     </div>
                     <div class="card-content" style="background-color:#1e87da">
                         <div class=" row">
-                            <% @groups_formed.each do |group| %>
-                                 <% if group.group_number.present? %>
-                                    <div id="group<%= group.group_number.to_s + section.id.to_s %>">
-                                        <%  @group_members[group.group_number].each do |rel| %>
+                            <% @section_groups[section.id].each do |group_number, members| %>
+                                 <% if group_number.present? %>
+                                    <div id="group<%= group_number.to_s + section.id.to_s %>">
+                                        <%  members.each do |rel| %>
                                             <% if rel.user.present?  %>
                                                 <!-- Modal Ver estudiante-->
                                                 <div id="verEstudiante<%= rel.user.id%>" class="modal">
