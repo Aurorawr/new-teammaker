@@ -71,6 +71,7 @@
                 <div class="card blue white-text">
                     <div class="card-content">
                         <h4> Sección: <%= section.code %></h4>
+                        <%= link_to "EXPORTAR", excel_path(format: :xlsx, section: section.id), class: 'btn blue waves-light' %>
                     </div>
                     <% if section.groups.exists? %>
                     <div class="card-tabs">

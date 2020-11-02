@@ -28,6 +28,8 @@ Rails.application.routes.draw do
 
   get 'grupos' => 'groups#index'
   post  'grupos' => 'groups#index' 
-  get 'mi_equipo' => 'groups#my_group' 
+  get 'mi_equipo' => 'groups#my_group'
+
+  get 'excel' => 'groups#groups_list'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

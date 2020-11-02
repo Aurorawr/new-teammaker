@@ -434,19 +434,7 @@ class GroupsController < ApplicationController
     end
     @section_groups = Hash.new
     @sections_show.each do |section|
-        @groups_formed  = section.user_sections.select(:group_number).distinct.order(:group_number)
-        @group_members = Hash.new
-        @groups_formed.each do |us|
-            if  us.group_number.present?
-                number =  us.group_number
-                members = UserSection.where(group_number: number).joins(:user)
-                @group_members[number] = members
-            end
-        end
-        @section_groups[section.id] = @group_members
-    end
-    @section_groups[1].each do |k, v|
-        puts v
+        @section_groups[section.id] = get_groups section
     end
 
   end # fin index
@@ -752,4 +740,26 @@ end
   end
   
 end
+
+def groups_list
+    section = Section.find(params[:section])
+    @groups = get_groups section
+    respond_to do |format|
+        format.xlsx
+    end
+  end
+
+def get_groups section
+    groups_formed  = section.user_sections.select(:group_number).distinct.order(:group_number)
+    group_members = Hash.new
+    groups_formed.each do |us|
+        if  us.group_number.present?
+            number =  us.group_number
+            members = UserSection.where(group_number: number).joins(:user)
+            group_members[number] = members
+        end
+    end
+    group_members
+end
+
 end
