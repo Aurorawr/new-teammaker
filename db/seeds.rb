@@ -8,6 +8,7 @@
 
 require 'faker'
 
+=begin
 # Carreras
 inst = Institution.create(name: "Universidad de Santiago de Chile")
 
@@ -30,15 +31,18 @@ Program.create!(name: "Ingeniería de Ejecución en Industria", institution: ins
 Program.create!(name: "Ingeniería de Ejecución en Mecánica", institution: inst) #16
 Program.create!(name: "Ingeniería de Ejecución en Metalurgia", institution: inst) #17
 Program.create!(name: "Ingeniería de Ejecución en Química", institution: inst) #18
+=end
+
+programs = Program.limit(10)
 
 # Secciones
-subject = Subject.create!(name: "Demeter", code: "DMT")
+subject = Subject.create!(name: "Gobierno y Gestión usando NIST", code: "GGNIST")
+#subject = Subject.last
+#type = SectionType.find(3)
+type = SectionType.last
+section = Section.create!(subject: subject, section_type: type, code: 'TEST-1', semester: 2, year: 2017)
 
-type = SectionType.create!(name: "Laboratorio")
-
-section = Section.create!(subject: subject, section_type: type, code: 'A-1', semester: 2, year: 2017)
-
-(1..59).each do |index|
+(1..172).each do |index|
     name = Faker::Name.first_name
     surname = Faker::Name.last_name
     email = name + surname + "@mail.com"
@@ -46,17 +50,19 @@ section = Section.create!(subject: subject, section_type: type, code: 'A-1', sem
     age = rand(25..50)
     user = User.create!(email: email,name: name ,surname: surname, rol: 3 ,status: true ,password: '111111',password_confirmation: '111111', sex: gender, age: age,  accept_model: true)
     user.sections << section
-    user.programs << [program, program1, program2, program3, program4].sample
+    user.programs << programs.sample
     user.save
     eneatype = rand(1..9)
     Eneatype.create!(user: user, number: eneatype, score: 69)
     for i in(1..3)
-        test = user.tests.create(kind: i, status: true, answered: true)
+        test = user.tests.find_by(kind: i)
+        test.answered = true
+        test.save
         if i == 1
             Answer.create(test: test, element_kind: eneatype, number: 1, answer: eneatype)
         else
             type_test = i == 2 ? 1 : 0
-            randomUsers = [1..59].sample(2)
+            randomUsers = [1..172].sample(5)
             randomUsers.each do |u|
                 Answer.create(test: test  , element_kind: type_test, number: u, answer: 1)
                 Answer.create(test: test  , element_kind: type_test, number: u, answer: 0)
@@ -65,6 +71,7 @@ section = Section.create!(subject: subject, section_type: type, code: 'A-1', sem
     end
 end
 
+=begin
 # Coordinadores
 coord = program.users.create!(email: 'coordinador@mail.com',name: 'Juan' ,surname: 'Gómez' , rol: 0 ,status: true ,password: '111111',password_confirmation: '111111')
 coord.sections << section
@@ -77,3 +84,5 @@ ayu.sections << section
 # Estudiantes
 estu = program.users.create!(email: 'estudiante@mail.com',name: 'Franco' ,surname: 'Gotelli' , rol: 3 ,status: true ,password: '111111',password_confirmation: '111111')
 estu.sections << section
+
+=end
