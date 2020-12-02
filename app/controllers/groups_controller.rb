@@ -755,7 +755,7 @@ def get_groups section
     groups_formed.each do |us|
         if  us.group_number.present?
             number =  us.group_number
-            members = UserSection.where(group_number: number).joins(:user)
+            members = section.user_sections.where(group_number: number).joins(:user)
             group_members[number] = members
         end
     end
