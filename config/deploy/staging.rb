@@ -22,7 +22,7 @@
 #role :db,  %w{ubuntu@ec2-18-234-216-166.compute-1.amazonaws.com}
 
 set :user, "ubuntu"
-server "ec2-3-95-173-233.compute-1.amazonaws.com", roles: [:app, :web, :db]
+server "ec2-3-85-25-189.compute-1.amazonaws.com", roles: [:app, :web, :db]
 # set :master_key_local_path, "/home/lucas/Documents/Memoria/new-team-maker/config/master.key"
 
 
