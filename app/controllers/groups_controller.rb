@@ -214,7 +214,7 @@ class GroupsController < ApplicationController
                 ptGroups << ptGroup
                 acum  = 0.0
                 for i in 0..pt.count-1
-                    acum  = acum + (pt[i]-ptGroup[i])**2
+                    acum  = acum + (pt[i].to_i - ptGroup[i].to_i)**2
                 end
                 acums[group_number] = (acum/@Map.row_size).round(3)
             end
