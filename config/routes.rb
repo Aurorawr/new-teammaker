@@ -31,5 +31,7 @@ Rails.application.routes.draw do
   get 'mi_equipo' => 'groups#my_group'
 
   get 'excel' => 'groups#groups_list'
+
+  get 'complaint' => 'groups#get_complaint'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

@@ -1,4 +1,226 @@
 class GroupsController < ApplicationController
+
+    def get_complaint
+        require 'matrix'
+        section = Section.find(params[:section])
+        allStudents = section.users.where(rol: 3)
+        students = []
+        studentsIndexes = Hash.new
+        studentActualIndex = 0
+        allStudents.each_with_index do |student, index|
+            if student.group.present?
+                students << student
+                studentsIndexes[student.id] = studentActualIndex
+                studentActualIndex += 1
+            end
+        end
+        @Mp = Matrix.build(9, students.size){ 0 }
+        students.each_with_index do |p, index|
+            if p.eneatype.present?
+                @Mp.send(:[]=, p.eneatype.number-1, index, 1)
+            else
+                @Mp.send(:[]=, rand(0..8), index, 1)
+            end
+        end
+        @Mscod = Matrix.build(students.size, students.size){ '!!!!' }
+        students.each_with_index do |p, index|
+          positivo = p.tests.find_by(kind: 2).answers
+          negativo = p.tests.find_by(kind: 3).answers
+          
+          positivo.each do |creeAceptacion|
+            if creeAceptacion.answer == 0 # si cree
+                students.each_with_index do |person, indexa|
+                if person.id == creeAceptacion.number
+                  indexUser = indexa
+                end
+              end
+              if @Mscod[index, indexUser][@Mscod[index, indexUser].length-4] == '!'
+                @Mscod.send(:[]=, index, indexUser, '(' + @Mscod[index, indexUser][1..3])
+                @Mscod.send(:[]=, indexUser, index, '(' + @Mscod[index, indexUser][1..3])
+              elsif @Mscod[index, indexUser][@Mscod[index, indexUser].length-1] == '!'
+                @Mscod.send(:[]=, index, indexUser, @Mscod[index, indexUser][0..2] + ')')
+                @Mscod.send(:[]=, indexUser, index, @Mscod[index, indexUser][0..2] + ')')
+              end
+            end
+          end
+        
+          negativo.each do |creeRechazo|
+            if creeRechazo.answer == 0 # no cree
+                students.each_with_index do |person, index|
+                if person.id == creeRechazo.number
+                  indexUser = index
+                end
+              end
+              if @Mscod[index, indexUser][@Mscod[index, indexUser].length-4] == '!'
+                @Mscod.send(:[]=, index, indexUser, '[' + @Mscod[index, indexUser][1..3])
+                @Mscod.send(:[]=, indexUser, index, '[' + @Mscod[index, indexUser][1..3])
+              elsif @Mscod[index, indexUser][@Mscod[index, indexUser].length-1] == '!'
+                @Mscod.send(:[]=, index, indexUser, @Mscod[index, indexUser][0..2] + ']')
+                @Mscod.send(:[]=, indexUser, index, @Mscod[index, indexUser][0..2] + ']')
+              end
+            end
+          end
+
+          positivo.each do |creeAceptacion|
+            if creeAceptacion.answer == 1 # si ELIGE
+                students.each_with_index do |person, indexa|
+                if person.id == creeAceptacion.number
+                  indexUser = indexa
+                end
+              end
+              if @Mscod[index, indexUser][@Mscod[index, indexUser].length-3] == '!'
+                @Mscod.send(:[]=, index, indexUser, @Mscod[index, indexUser][0] + 'E' + @Mscod[index, indexUser][2..3])
+                @Mscod.send(:[]=, indexUser, index, @Mscod[index, indexUser][0] + 'E' + @Mscod[index, indexUser][2..3])
+              elsif @Mscod[index, indexUser][@Mscod[index, indexUser].length-2] == '!'
+                @Mscod.send(:[]=, index, indexUser, @Mscod[index, indexUser][0..1] + 'e' + @Mscod[index, indexUser][3])
+                @Mscod.send(:[]=, indexUser, index, @Mscod[index, indexUser][0..1] + 'e' + @Mscod[index, indexUser][3])
+              end
+            end
+          end
+
+          negativo.each do |creeRechazo|
+            if creeRechazo.answer == 1 # no ELIGE
+                students.each_with_index do |person, index|
+                if person.id == creeRechazo.number
+                  indexUser = index
+                end
+              end
+              if @Mscod[index, indexUser][@Mscod[index, indexUser].length-3] == '!'
+                @Mscod.send(:[]=, index, indexUser, @Mscod[index, indexUser][0] + 'R' + @Mscod[index, indexUser][2..3])
+                @Mscod.send(:[]=, indexUser, index, @Mscod[index, indexUser][0] + 'R' + @Mscod[index, indexUser][2..3])
+              elsif @Mscod[index, indexUser][@Mscod[index, indexUser].length-2] == '!'
+                @Mscod.send(:[]=, index, indexUser, @Mscod[index, indexUser][0..1] + 'r' + @Mscod[index, indexUser][3])
+                @Mscod.send(:[]=, indexUser, index, @Mscod[index, indexUser][0..1] + 'r' + @Mscod[index, indexUser][3])
+              end
+            end
+          end
+        end
+
+         # Matriz de relaciones interpersonales (Mr)
+         @Mr = Matrix[]
+         @Mr = Matrix.rows(@Mr.to_a << [0,1,0,1,1,1,1,0,0])
+         @Mr = Matrix.rows(@Mr.to_a << [1,1,1,1,1,0,1,1,0])
+         @Mr = Matrix.rows(@Mr.to_a << [0,1,1,0,1,0,1,0,1])
+         @Mr = Matrix.rows(@Mr.to_a << [1,1,0,1,0,0,0,1,0])
+         @Mr = Matrix.rows(@Mr.to_a << [1,1,1,0,1,1,1,0,0])
+         @Mr = Matrix.rows(@Mr.to_a << [1,0,0,0,1,0,1,0,1])
+         @Mr = Matrix.rows(@Mr.to_a << [1,1,1,0,1,1,1,1,0])
+         @Mr = Matrix.rows(@Mr.to_a << [0,1,0,1,0,0,1,0,1])
+         @Mr = Matrix.rows(@Mr.to_a << [0,0,1,0,0,1,0,1,1])
+ 
+         # Matriz eneagramatica Me = Mp^t(Mr*Mp)
+         @Me = Matrix[]
+         @Me = @Mp.transpose * (@Mr * @Mp)
+ 
+         # Compatibilidad eneagramatica con uno mismo = 1
+         for i in 1..@Me.row_size
+           @Me.row(i-1).each_with_index do |e, index|
+             if i-1 == index
+               @Me.send(:[]=, i-1, index, 1)
+             end
+           end
+         end
+ 
+         # Matriz social decodificada
+         @Ms = @Mscod.clone
+         socioValor = 0.0
+         for i in 1..@Ms.row_size
+           @Ms.row(i-1).each_with_index do |e, index|
+             if e[0] == '('
+               socioValor = socioValor + 0.2
+             elsif e[0] == '['
+               socioValor = socioValor - 0.2
+             end
+             if e[1] == 'E'
+               socioValor = socioValor + 0.3
+             elsif e[1] == 'R'
+               socioValor = socioValor - 0.3
+             end
+             if e[2] == 'e'
+               socioValor = socioValor + 0.3
+             elsif e[2] == 'r'
+               socioValor = socioValor - 0.3
+             end
+             if e[3] == ')'
+               socioValor = socioValor + 0.2
+             elsif e[3] == ']'
+             elsif i-1 == index
+               socioValor = 1
+             end
+ 
+             # Normalización
+             socioValor = (socioValor + 1)/2
+ 
+ 
+             @Ms.send(:[]=, i-1, index, socioValor.round(3))
+             socioValor = 0.0
+           end
+         end
+ 
+         @mp = Matrix.zero(students.size, 1)
+         @mg = Matrix.zero(students.size, 1)
+         @ma = Matrix.zero(students.size, 1)
+ 
+         students.each_with_index do |p, i|
+            # @mp.send(:[]=, i, 0, p.programs.first.id.to_f)
+            @mp.send(:[]=, i, 0, rand(1..4))
+             @mg.send(:[]=, i, 0, p.sex.to_f)
+             @ma.send(:[]=, i, 0, p.age.to_f)
+         end
+ 
+         @mpn = normalizar(@mp.clone)
+         @man = normalizar(@ma.clone)
+         # Matriz social codificada 
+         @Mes = Matrix[]
+         @Mes = @Me + @Ms
+         @totalEstudiantes = @Mes.row_size
+         # Correccion de decimales
+         for i in 1..@Mes.row_size
+           @Mes.row(i-1).each_with_index do |e, index|
+             @Mes.send(:[]=, i-1, index, e.round(2))
+           end
+         end
+         
+         @Map_pre =  normalizar(@Mes.clone )            # Matriz de aptitud
+         
+         @Map = Matrix.hstack(@Map_pre, @mpn, @man, @mg)
+
+         pt = promedio_atributos(@Map)
+
+         #p = generar_Individuos(5, @Map.row_size/5, 5, @Map.row_size,@Map.row_size).clone
+
+         #pi             = promedio_por_individuo(p,5,@Map.row_size/5,pt.count,5).clone
+
+         groups = get_groups section
+
+         ptGroups = []
+
+         acums = Hash.new
+         groups.each do |group_number, members|
+            groupData = []
+            members.each do|member|
+                groupData << @Map.row(studentsIndexes[member.id])
+            end
+
+            groupDataMatrix = Matrix.rows(groupData)
+
+            ptGroup = promedio_atributos(groupDataMatrix)
+            ptGroups << ptGroup
+            acum  = 0.0
+            for i in 0..pt.count-1
+                acum  = acum + (pt[i]-ptGroup[i])**2
+            end
+            acums[group_number] = (acum/@Map.row_size).round(3)
+         end
+
+         @sectionName = section.code
+
+         @data = acums
+ 
+         respond_to do |format|
+            format.xlsx
+        end
+    end
   
   def index
     # 1.CONVERSION DE DATOS DEL MODELO PSICOSOCIAL
@@ -302,7 +524,7 @@ class GroupsController < ApplicationController
           for x in 1..generation
             # Calcular promedio de los atributos (PT) de la medida de aptitud
             # @Map y p[guys]
-            pt             = promedio_atributos
+            pt             = promedio_atributos(@Map)
             pi             = promedio_por_individuo(p,guys,grupos,pt.count,porGrupo).clone
             d              = fitness_por_individuo(pt,pi,guys)
             f              = ruleta(guys,n_children,d) 
@@ -683,14 +905,14 @@ end
     return pi
   end
 
-  def promedio_atributos
+  def promedio_atributos(matrix)
     pt = [] 
-    for i in 1..@Map.column_size
+    for i in 1..matrix.column_size
       auxPt = 0
-      @Map.column(i-1).each do |e|
+      matrix.column(i-1).each do |e|
         auxPt = auxPt + e
       end
-      pt[i-1] = (auxPt/@Map.column_size)#.round(2)
+      pt[i-1] = (auxPt/matrix.column_size)#.round(2)
     end  
     return pt
   end
