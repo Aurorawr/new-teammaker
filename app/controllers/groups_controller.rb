@@ -194,39 +194,8 @@ class GroupsController < ApplicationController
 
          groups = get_groups section
 
-         ptGroups = []
-         logger.debug groups
-         logger.debug studentsIndexes
-
-         acums = Hash.new
-         groups.each do |group_number, members|
-            logger.debug group_number
-            logger.debug members
-            if group_number.present?
-                groupData = []
-                members.each do|member|
-                    groupData << @Map.row(studentsIndexes[member.id])
-                end
-
-                groupDataMatrix = Matrix.rows(groupData)
-
-                ptGroup = promedio_atributos(groupDataMatrix)
-                ptGroups << ptGroup
-                acum  = 0.0
-                for i in 0..pt.count-1
-                    acum  = acum + (pt[i].to_i - ptGroup[i].to_i)**2
-                end
-                acums[group_number] = (acum/@Map.row_size).round(3)
-            end
-         end
-
-         @sectionName = section.code
-
-         @data = acums
- 
-         respond_to do |format|
-            format.xlsx
-        end
+         debugData = {:students => students, :indexes => studentsIndexes, :map => @Map, :pt => pt, :g => groups}
+        render plain: debugData 
     end
   
   def index
