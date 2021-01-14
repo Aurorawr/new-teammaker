@@ -195,10 +195,14 @@ class GroupsController < ApplicationController
          groups = get_groups section
 
          ptGroups = []
+         puts groups
+         puts studentsIndexes
 
          acums = Hash.new
          groups.each do |group_number, members|
-                if group_number.present?
+            puts group_number
+            puts members
+            if group_number.present?
                 groupData = []
                 members.each do|member|
                     groupData << @Map.row(studentsIndexes[member.id])
