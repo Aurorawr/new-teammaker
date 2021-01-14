@@ -981,10 +981,14 @@ def groups_list
 def get_groups section
     groups_formed  = section.user_sections.select(:group_number).distinct.order(:group_number)
     group_members = Hash.new
+    puts groups_formed
     groups_formed.each do |us|
+        puts us
         if  us.group_number.present?
             number =  us.group_number
+            puts number
             members = section.user_sections.where(group_number: number).joins(:user)
+            puts members
             group_members[number] = members
         end
     end
