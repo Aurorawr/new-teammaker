@@ -7,13 +7,14 @@ class GroupsController < ApplicationController
         students = []
         studentsIndexes = Hash.new
         studentActualIndex = 0
-        allStudents.each_with_index do |student, index|
+        allStudents.each do |student|
             if student.group.present?
                 students << student
                 studentsIndexes[student.id] = studentActualIndex
                 studentActualIndex += 1
             end
         end
+        indexUser = 0
         @Mp = Matrix.build(9, students.size){ 0 }
         students.each_with_index do |p, index|
             if p.eneatype.present?
