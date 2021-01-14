@@ -205,10 +205,18 @@ class GroupsController < ApplicationController
             if group_number.present?
                 groupData = []
                 members.each do|member|
-                    groupData << @Map.row(studentsIndexes[member.id])
+                    groupData << @Map.row(studentsIndexes[member.user_id])
                 end
 
-                
+                groupDataMatrix = Matrix.rows(groupData)
+
+                ptGroup = promedio_atributos(groupDataMatrix)
+                ptGroups << ptGroup
+                acum  = 0.0
+                for i in 0..pt.count-1
+                    acum  = acum + (pt[i]-ptGroup[i])**2
+                end
+                acums[group_number] = (acum/@Map.row_size).round(3)
             end
          end
 
@@ -216,12 +224,12 @@ class GroupsController < ApplicationController
 
          @data = acums
  
-         #respond_to do |format|
-         #   format.xlsx
-        #end
+        respond_to do |format|
+           format.xlsx
+        end
 
-        debugData = {:students => students, :indexes => studentsIndexes, :map => @Map, :pt => pt, :g => groups, :data => @data}
-        render plain: debugData 
+        #debugData = {:students => students, :indexes => studentsIndexes, :map => @Map, :pt => pt, :g => groups, :data => @data}
+        #render plain: debugData 
     end
   
   def index
