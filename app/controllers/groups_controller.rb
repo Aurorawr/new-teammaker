@@ -195,13 +195,13 @@ class GroupsController < ApplicationController
          groups = get_groups section
 
          ptGroups = []
-         puts groups
-         puts studentsIndexes
+         logger.debug groups
+         logger.debug studentsIndexes
 
          acums = Hash.new
          groups.each do |group_number, members|
-            puts group_number
-            puts members
+            logger.debug group_number
+            logger.debug members
             if group_number.present?
                 groupData = []
                 members.each do|member|
