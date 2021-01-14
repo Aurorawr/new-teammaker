@@ -198,20 +198,22 @@ class GroupsController < ApplicationController
 
          acums = Hash.new
          groups.each do |group_number, members|
-            groupData = []
-            members.each do|member|
-                groupData << @Map.row(studentsIndexes[member.id])
-            end
+                if group_number.present?
+                groupData = []
+                members.each do|member|
+                    groupData << @Map.row(studentsIndexes[member.id])
+                end
 
-            groupDataMatrix = Matrix.rows(groupData)
+                groupDataMatrix = Matrix.rows(groupData)
 
-            ptGroup = promedio_atributos(groupDataMatrix)
-            ptGroups << ptGroup
-            acum  = 0.0
-            for i in 0..pt.count-1
-                acum  = acum + (pt[i]-ptGroup[i])**2
+                ptGroup = promedio_atributos(groupDataMatrix)
+                ptGroups << ptGroup
+                acum  = 0.0
+                for i in 0..pt.count-1
+                    acum  = acum + (pt[i]-ptGroup[i])**2
+                end
+                acums[group_number] = (acum/@Map.row_size).round(3)
             end
-            acums[group_number] = (acum/@Map.row_size).round(3)
          end
 
          @sectionName = section.code
